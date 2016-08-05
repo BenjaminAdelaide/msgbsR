@@ -1,0 +1,13 @@
+Package: gbsR
+Type: Package
+Title: gbsR: genotyping by sequencing (GBS) R functions
+Version: 0.1.0
+Author: Benjamin Mayne
+Maintainer: Benjamin Mayne <benjamin.mayne@adelaide.edu.au>
+Description: Quantitates read counts from a GBS experiment
+License: GPL-3
+Collate: 'rawCounts.R'
+LazyData: TRUE
+RoxygenNote: 5.0.1
+Depends: ggplot2, parallel, Rsamtools, bedr, edgeR, limma, Biobase, R (>= 3.0.2)
+Suggests: BiocGenerics
