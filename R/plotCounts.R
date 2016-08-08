@@ -1,5 +1,11 @@
 countMatrix = x; phenotype1 = y; phenotype2 = z
 
+x <- data.frame(matrix(sample(0:100, size = 10000*10, replace = TRUE), nrow = 10000, ncol = 10))
+y <- c(rep('A', 5), rep('B', 5))
+z <- c(rep('C', 3), rep('D', 2), rep('E', 2), rep('F', 3))
+
+
+
 plotCounts(countMatrix, phenotype1, phenotype2 = NULL){
     
   # Determine the total number of cuts sites per sample
