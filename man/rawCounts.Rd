@@ -4,7 +4,7 @@
 \alias{rawCounts}
 \title{rawCounts}
 \usage{
-datCounts <- rawCounts(bamFilepath = 'path-to-bam-files', threads = 1)
+rawCounts(bamFilepath = 'path-to-bam-files', threads = 1)
 }
 \arguments{
 \item{threads}{The total number of usable threads to be used. Default is 1.}
@@ -12,10 +12,15 @@ datCounts <- rawCounts(bamFilepath = 'path-to-bam-files', threads = 1)
 \item{bamFilePath}{The path to the location of bam file(s).}
 }
 \value{
-Produces a data frame where the rows correspond to cut sites and columns are the samples. Cut sites are given a unique ID (chromosome:strand:position)
+Produces a data frame where the rows correspond to cut sites and columns are the samples. Cut sites are given a unique ID (chromosome:strand:position).
 }
 \description{
 Imports the raw read counts from sorted and indexed bam file(s)
+}
+\examples{
+\dontrun{
+datCounts <- rawCounts(bamFilePath = 'path-to-bam-files', threads = 2)
+}
 }
 \author{
 Benjamin Mayne, Sam Buckberry
