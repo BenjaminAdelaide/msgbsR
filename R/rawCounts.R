@@ -4,8 +4,12 @@
 #'
 #' @param bamFilePath The path to the location of bam file(s).
 #' @param threads The total number of usable threads to be used. Default is 1.
-#' @usage datCounts <- rawCounts(bamFilepath = 'path-to-bam-files', threads = 1)
+#' @usage rawCounts(bamFilepath = 'path-to-bam-files', threads = 1)
 #' @return Produces a data frame where the rows correspond to cut sites and columns are the samples. Cut sites are given a unique ID (chromosome:strand:position).
+#' @examples
+#' \dontrun{
+#' datCounts <- rawCounts(bamFilePath = 'path-to-bam-files', threads = 2)
+#' }
 #' @author Benjamin Mayne, Sam Buckberry
 #' @export
 
