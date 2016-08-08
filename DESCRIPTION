@@ -9,5 +9,5 @@ License: GPL-3
 Collate: 'rawCounts.R'
 LazyData: TRUE
 RoxygenNote: 5.0.1
-Depends: ggplot2, parallel, Rsamtools, bedr, edgeR, limma, Biobase, R (>= 3.0.2)
+Depends: ggplot2, parallel, Rsamtools, bedr, edgeR, limma, R (>= 3.0.2)
 Suggests: BiocGenerics
