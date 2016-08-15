@@ -6,7 +6,7 @@ Author: Benjamin Mayne
 Maintainer: Benjamin Mayne <benjamin.mayne@adelaide.edu.au>
 Description: Quantitates read counts from a GBS experiment
 License: GPL-3
-Collate: 'rawCounts.R' 'checkCuts.R' 'plotCounts.R'
+Collate: 'rawCounts.R' 'checkCuts.R' 'plotCounts.R' 'diffCutting.R'
 LazyData: TRUE
 RoxygenNote: 5.0.1
 Depends: ggplot2, parallel, Rsamtools, bedr, edgeR, limma, R (>= 3.0.2)
