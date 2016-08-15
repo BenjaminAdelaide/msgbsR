@@ -4,7 +4,7 @@
 \alias{checkCuts}
 \title{checkCuts}
 \usage{
-checkCuts(cutSites = my_cuts, fastaPath = 'path-to-fasta-file', seq = sequence)
+checkCuts(cutSites = my_cuts, fastaPath = 'path-to-fasta-file', seq = sequence, chr.prefix = TRUE)
 }
 \arguments{
 \item{cutSites}{A matrix, where the first column is the chromosome ID, the second column is the starting position and the third column is the ending position.}
@@ -12,6 +12,8 @@ checkCuts(cutSites = my_cuts, fastaPath = 'path-to-fasta-file', seq = sequence)
 \item{fastaPath}{The path to fasta file to be checked against.}
 
 \item{seq}{The desired sequence that the enzyme should have cut.}
+
+\item{chr.prefix}{Is there a chr prefix in the first column of cutSites. Default is TRUE.}
 }
 \description{
 Determines the sequence around a cut site
