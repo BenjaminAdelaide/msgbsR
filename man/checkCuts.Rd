@@ -4,10 +4,12 @@
 \alias{checkCuts}
 \title{checkCuts}
 \usage{
-checkCuts(cutSites = my_cuts, fastaPath = 'path-to-fasta-file', seq = sequence, chr.prefix = TRUE)
+checkCuts(cutSites = my_cuts, cutIDs = my_IDs, fastaPath = 'path-to-fasta-file', seq = sequence, chr.prefix = TRUE)
 }
 \arguments{
-\item{cutSites}{A matrix, where the first column is the chromosome ID, the second column is the starting position and the third column is the ending position.}
+\item{cutSites}{A matrix where the first column is the chromosome ID, the second column is the starting position and the third column is the ending position.}
+
+\item{cutIDs}{A character vector containing unique IDs for each cut site.}
 
 \item{fastaPath}{The path to fasta file to be checked against.}
 
@@ -21,12 +23,12 @@ Determines the sequence around a cut site
 \examples{
 \dontrun{
 # Firstly generate a matrix containing some MspI cut sites (sequence=CCGG)
-set.seed(1)
 x <- matrix(data=c(rep('chr1', 3), '29736', '120552', '297122',
                                    '29736', '120552', '297122'))
 x[,3] <- as.numeric(x[,2]) + 2
 x[,2] <- as.numeric(x[,2]) - 2
-my_cuts <- checkCuts(cutSites=x, fastaPath='/hg38/genome.fa', seq='CCGG')
+y <- c('A', 'B', 'C')
+my_cuts <- checkCuts(cutSites=x, cutIDs=y fastaPath='/hg38/genome.fa', seq='CCGG')
 }
 }
 \author{
