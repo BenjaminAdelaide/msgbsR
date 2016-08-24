@@ -2,6 +2,7 @@
 
 export(checkCuts)
 export(diffCutting)
+export(plotChr)
 export(plotCircos)
 export(plotCounts)
 export(rawCounts)
