@@ -40,7 +40,7 @@ checkCuts <- function(cutSites, fastaPath, seq, chr.prefix = TRUE){
   }
   # Filter out cutSites that do not match the seq given
   sequences <- sequences[which(sequences[ ,2] == seq | sequences[ ,2] == toupper(seq)), ]
-  row.names(sequences) <- NULLs
+  row.names(sequences) <- NULL
 
   # Return the correct sequences
   return(sequences)
