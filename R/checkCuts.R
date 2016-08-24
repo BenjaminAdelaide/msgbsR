@@ -36,7 +36,7 @@ checkCuts <- function(cutSites, fastaPath, seq, chr.prefix = TRUE){
   if(chr.prefix == TRUE){
   sequences <- get.fasta(cutSites_sorted, fasta=fastaPath)
   } else {
-  sequences <- get.fasta(cutSites_sorted, fasta=fastaPath)
+  sequences <- get.fasta(cutSites_sorted, fasta=fastaPath, check.chr = FALSE)
   }
   # Filter out cutSites that do not match the seq given
   sequences <- sequences[which(sequences[ ,2] == seq | sequences[ ,2] == toupper(seq)), ]
