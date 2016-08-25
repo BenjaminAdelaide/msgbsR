@@ -1,0 +1,82 @@
+
+\documentclass{article}
+
+\usepackage{natbib}
+\usepackage{graphics}
+\usepackage{amsmath}
+\usepackage{indentfirst}
+\usepackage[utf8]{inputenc}
+\usepackage{color}
+\usepackage{hyperref}
+
+% \VignetteIndexEntry{massiR_Example}
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+\title{gbsR: an R package to analyse Genotyping by Sequencing (GBS) data}
+\author{Benjamin Mayne}
+\maketitle
+
+\tableofcontents
+
+\clearpage
+
+\section{Introduction}
+
+Current GBS data analysis tools do not fulfill all experimental designs. For example, genotyping by sequencing (GBS) experiments using methylation sensitive restriction enzyme (REs) are an effective method to identify differentially methylated sites that may not be accessible in other technologies such as microarrays and capture sequencing. However, current data analysis tools do not satisfy the requirements for these types of experimental designs.
+
+Here we present gbsR, an R package for data analysis of GBS experiments. Read counts and cut sites from a GBS experiment can be read directly into the R environment directly from a sorted and indexed BAM file(s).
+
+\section{Reading data into R}
+
+The analysis with gbsR begins with a directory which contains sorted and indexed BAM files. gbsR contains an example data set containing 4 samples from a GBS experiment using the restriction enzyme ApeKI. In this example the 4 samples are from Barley and have be truncated for chromosome 1.
+
+To read in the data directly into R can be done using the rawCounts() function, which requires the directory path to where the sorted and indexed files are located and the desired number of threads to be run (Default = 1).
+<<load the example data>>=
+library(gbsR)
+
+my_path <- system.file("extdata", "sample1.bam", package = 'gbsR')
+my_path <- gsub('sample1.bam', '', my_path)
+
+datCounts <- rawCounts(bamFilepath = my_path, threads = 1)
+@
+The result is a data frame object containing a table of read counts. The columns are samples and the rows contain the location of each unique cut sites. Each cut site as been given a unique ID (chromosome:strand:position).
+
+\section{Confirmation of correct cut sites}
+One may wish to check the.
+
+\section{Visualization of read counts}
+
+Before further downstream analyses with the table of read counts, the user may want to filter out samples that did no generate a sufficient amount of read counts or low cut sites. The gbsR package contains a function which plots the total number of read counts against the total number of cut sites produced per sample.
+
+To visualize the total number of read counts against the total number of cut sites produced per sample:
+<<plot counts per cut sites >>=
+plotCounts(countMatrix = datCounts, condition1 = colnames(datCounts))
+@
+This function generates a plot (Figure 1) where the x axis and y axis represents the total number of reads and the total number of cut sites produced for each sample respectively.
+
+\setkeys{Gin}{width=1\linewidth}
+\begin{figure}
+\begin{center}
+<<label=fig1, fig=TRUE, echo=FALSE, eps=FALSE, >>=
+plotCounts(countMatrix = datCounts, condition1 = colnames(datCounts))
+@
+\end{center}
+\caption{Variation of the total number of reads and cut sites produced in each sample.}
+\label{fig:fig1}
+\end{figure}
+
+\clearpage
+
+
+\section{Differential cutting analysis}
+
+
+\section{Visualization of cut site locations}
+The gbsR package contains 2 functions to allow visualization of the location of cut sites. Given the lengths of the chromosomes the cut sites can be visualised in a circos plot (Figure 2) or a karyogram (Figure 3).
+
+To generate a circos plot
+
+
+\end{document}
