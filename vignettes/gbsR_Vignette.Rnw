@@ -28,6 +28,10 @@ Current GBS data analysis tools do not fulfill all experimental designs. For exa
 
 Here we present gbsR, an R package for data analysis of GBS experiments. Read counts and cut sites from a GBS experiment can be read directly into the R environment directly from a sorted and indexed BAM file(s).
 
+\section{Third party tools}
+
+The gbsR package functions within the R environment, however it requires the use of bedtools within your default PATH. gbsR can still function without bedtools, however to gain full value of the R package it is recommended that bedtools is installed. Bedtools can be installed from here: https://github.com/arq5x/bedtools2.
+
 \section{Reading data into R}
 
 The analysis with gbsR begins with a directory which contains sorted and indexed BAM files. gbsR contains an example data set containing 4 samples from a GBS experiment using the restriction enzyme ApeKI. In this example the 4 samples are from Barley and have be truncated for chromosome 1.
@@ -64,7 +68,7 @@ x[,2] <- as.numeric(x[,2]) -2
 x <- as.matrix(x)
 @
 
-The object x is a matrix that contains the chromosome ID, the start and end postion of the ApeKI sequence length around the cut sites. These cut sites can now be checked if the sequence matches the ApeKI sequence (GCAGC or GCTGC).
+The object x is a matrix that contains the chromosome ID, the start and end position of the ApeKI sequence length around the cut sites. These cut sites can now be checked if the sequence matches the ApeKI sequence (GCAGC or GCTGC).
 
 To determine which cut sites correctly match the ApeKI sequence:
 <<run checkCuts>>=
@@ -109,7 +113,7 @@ plotCounts(countMatrix = datCounts, condition1 = colnames(datCounts))
 
 
 \section{Differential cutting analysis}
-gbsR utilises edgeR in order to determine which cut sites are differentially cut between groups. Since many GBS experiment can have many samples and groups gbsR offers a wrapper function of edgeR functions to automate differential cutting analysis.
+gbsR utilizes edgeR in order to determine which cut sites are differentially cut between groups. Since many GBS experiment can have many samples and groups gbsR offers a wrapper function of edgeR functions to automate differential cutting analysis.
 To determine which cut sites are differentiallly cut between groups:
 <<differential cutting>>=
 y <- data.frame(c('GpA', 'GpA', 'GpB', 'GpB'))
@@ -175,7 +179,7 @@ plotChr(cutSites = z[,c(1,3,3)], genome = chr1)
 \clearpage
 
 \section{Annotation}
-The gbsR package can also work with gff files to annotate interesting positions such as those that might be differentially methylated. Annotation can be done using the closestFeat function which requires 3 inputs of information. Annotation can also be strand specific
+The gbsR package can also work with gff files to annotate interesting positions such as those that might be differentially methylated. Annotation can be done using the closestFeat function which requires 3 inputs of information. Annotation can also be strand specific.
 
 Firstly, define the length of the chromosome.
 <<annotation>>=
