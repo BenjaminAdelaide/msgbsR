@@ -68,9 +68,9 @@ The object x is a matrix that contains the chromosome ID, the start and end post
 
 To determine which cut sites correctly match the ApeKI sequence:
 <<run checkCuts>>=
-x1 <- checkCuts(cutSites = x, cutIDs = row.names(datCounts), 
+x1 <- checkCuts(cutSites = x, cutIDs = row.names(datCounts),
       fastaPath = chr1, seq = 'GCAGC', chr.prefix = FALSE)
-x2 <- checkCuts(cutSites = x, cutIDs = row.names(datCounts), 
+x2 <- checkCuts(cutSites = x, cutIDs = row.names(datCounts),
       fastaPath = chr1, seq = 'GCTGC', chr.prefix = FALSE)
 @
 
@@ -115,7 +115,7 @@ To determine which cut sites are differentiallly cut between groups:
 y <- data.frame(c('GpA', 'GpA', 'GpB', 'GpB'))
 colnames(y) <- 'Group'
 top <- diffCutting(countMatrix = datCounts, pd = y, cateogory = 'Group',
-                   condition1 = 'GpA', condition2 = 'GpB', block = NULL, 
+                   condition1 = 'GpA', condition2 = 'GpB', block = NULL,
                    cpmThreshold = 1, thresholdSamples = 2)
 @
 
@@ -132,17 +132,17 @@ Extract the top 100 most differentially expressed cut sites.
 <<top sites>>=
 z <- top$cut_site[1:100]
 z <- data.frame(t(data.frame(strsplit(x=as.character(z), split=':'))))
-z[,2] <- z[,3]
 z <- as.matrix(z)
 row.names(z) <- NULL
 @
 To generate a circos plot:
 <<circos plot>>=
-plotCircos(cutSites = z, genome = chr1, cutSite.colour = 'red', genome.colour = 'blue')
+plotCircos(cutSites = z[,c(1,3,3)], genome = chr1,
+           cutSite.colour = 'red', genome.colour = 'blue')
 @
 To generate a karogram plot:
 <<karyogram plot>>=
-plotChr(cutSites = z, genome = chr1)
+plotChr(cutSites = z[,c(1,3,3)], genome = chr1)
 @
 
 
@@ -150,7 +150,8 @@ plotChr(cutSites = z, genome = chr1)
 \begin{figure}
 \begin{center}
 <<label=fig2, fig=TRUE, echo=FALSE, eps=FALSE, >>=
-plotCircos(cutSites = z, genome = chr1, cutSite.colour = 'red', genome.colour = 'blue')
+plotCircos(cutSites = z[,c(1,3,3)], genome = chr1,
+           cutSite.colour = 'red', genome.colour = 'blue')
 @
 \end{center}
 \caption{A circos plot representing the top 100 differential cut sites.}
@@ -160,11 +161,11 @@ plotCircos(cutSites = z, genome = chr1, cutSite.colour = 'red', genome.colour = 
 \clearpage
 
 
-\setkeys{Gin}{height=.4\linewidth}
+\setkeys{Gin}{width=1\linewidth}
 \begin{figure}
 \begin{center}
 <<label=fig3, fig=TRUE, echo=FALSE, eps=FALSE, >>=
-plotChr(cutSites = z, genome = chr1)
+plotChr(cutSites = z[,c(1,3,3)], genome = chr1)
 @
 \end{center}
 \caption{A karyogram of chromosome 1 showing the location of differential cut sites.}
@@ -173,7 +174,15 @@ plotChr(cutSites = z, genome = chr1)
 
 \clearpage
 
+\section{Annotation}
+The gbsR package can also work with gff files to annotate interesting positions such as those that might be differentially methylated. Annotation can be done using the closestFeat function which requires 3 inputs of information. Annotation can also be strand specific
 
+Firstly, define the length of the chromosome.
+<<annotation>>=
+mygff <- system.file("extdata", "chr1.gff3", package = 'gbsR')
+features <- closestFeat(gff = mygff, positions = z[1:100,], strand.specific = FALSE)
+head(features)
+@
 
 
 \end{document}
