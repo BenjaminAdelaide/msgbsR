@@ -9,7 +9,6 @@
 #' @export
 
 closestFeat <- function(gff, positions, strand.specific = TRUE){
-  gff = '~/gbsR_project/Hordeum_vulgare.082214v1.28.gff3';  positions = x;
 
   # Read in the gff file
   gff <- gffRead(gffFile = gff)
