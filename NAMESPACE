@@ -2,7 +2,7 @@
 
 export(checkCuts)
 export(closestFeat)
-export(diffCutting)
+export(diffMeth)
 export(plotChr)
 export(plotCircos)
 export(plotCounts)
