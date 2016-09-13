@@ -1,13 +1,13 @@
-#' diffCutting
+#' diffMeth
 #'
-#' Determines differential cutting from a matrix of read counts
+#' Determines differential methylated sites from a matrix of read counts
 #'
 #' @param countMatrix A data frame containing read counts. Rows are cut sites and columns are samples.
 #' @param pd A data frame containing any meta data of the samples within the countMatrix.
-#' @param cateogory The column name in pd that is to be tested for differential cutting.
+#' @param cateogory The column name in pd that is to be tested for differential methylation.
 #' @param condition1 The reference group within the cateogory of pd.
 #' @param condition2 The experimental group within the cateogory of pd.
-#' @param block The column name of pd if differential cutting is to be tested with a blocking factor. Default is NULL.
+#' @param block The column name of pd if differential methylation is to be tested with a blocking factor. Default is NULL.
 #' @param cpmThreshold Counts per million threshold of read counts to be filtered out of the analysis.
 #' @param thresholdSamples Minimum number of samples to contain the counts per million threshold.
 #' @return A data frame containing which cut sites are differenitally cut.
@@ -23,7 +23,7 @@
 #' y$Block <- rep(c(rep('C',1), rep('D', 1)), 5)
 #'
 #' # Determine differential cut sites
-#' z <- diffCutting(countMatrix = x, pd = y, cateogory = 'group', condition1 = 'A',
+#' z <- diffMeth(countMatrix = x, pd = y, cateogory = 'group', condition1 = 'A',
 #'               condition2 = 'B', block = 'Block', cpmThreshold = 1, thresholdSamples =3)
 #'
 #' }
@@ -33,7 +33,7 @@
 
 # Function for determining differential cutting
 
-diffCutting <- function(countMatrix, pd, cateogory, condition1, condition2, block = NULL,
+diffMeth <- function(countMatrix, pd, cateogory, condition1, condition2, block = NULL,
                         cpmThreshold, thresholdSamples){
 
   # Seperate the data into the two conditions
@@ -88,7 +88,7 @@ diffCutting <- function(countMatrix, pd, cateogory, condition1, condition2, bloc
 
   # Use Benjamini-Hochberg (BH) method for p-values
   lrt_top <- topTags(lrt, n = nrow(dge_expressed$counts), adjust.method = "BH", sort.by = "PValue")
-
+  colnames(lrt_top$table)[1] <- 'cut_site'
   return(lrt_top$table)
 }
 
