@@ -1,8 +1,8 @@
-# gbsR
-R package to analyse Genotyping by Sequencing (GBS) data - Currently under development
+# msgbsR
+R package to analyse methylation sensitive genotyping by sequencing (MS-GBS) data.
 
-The latest (devel) version of gbsR can be installed from this Github repository with:
+The latest (devel) version of msgbsR can be installed from this Github repository with:
 ```
 library(devtools)
- install_github(repo = "BenjaminAdelaide/gbsR", build_vignettes = TRUE)
+ install_github(repo = "BenjaminAdelaide/msgbsR", build_vignettes = TRUE)
 ```
