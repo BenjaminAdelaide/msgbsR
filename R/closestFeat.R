@@ -21,12 +21,11 @@ closestFeat <- function(gff, positions, strand.specific = TRUE){
     stop('Input is not a gff file')
   }
 
+  # Message
+  print('Reading in the gff file')
   # Read in the gff file
   gff <- gffRead(gffFile = gff)
-
-  # Message
-  cat("Finding closest feature...", "\n")
-
+  print('Finding closest features')
   # Start of looping through each position
   theclosestFeatures <- lapply(1:nrow(positions), function(x) findClosest(gff = gff,
               positions = positions, strand.specific = strand.specific, x = x))
@@ -37,7 +36,6 @@ closestFeat <- function(gff, positions, strand.specific = TRUE){
 }
 
 gffRead <- function(gffFile, nrows = -1) {
-  cat("Reading ", gffFile, ": ", sep="")
   gff = read.table(gffFile, sep="\t", as.is=TRUE, quote="",
                    header=FALSE, comment.char="#", nrows = nrows,
                    colClasses=c("character", "character", "character", "integer",
