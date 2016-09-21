@@ -10,6 +10,17 @@
 
 closestFeat <- function(gff, positions, strand.specific = TRUE){
 
+  ## Check if the gff is a gff file
+  extenstion <- function (x)
+  {
+    pos <- regexpr("\\.([[:alnum:]]+)$", x)
+    ifelse(pos > -1L, substring(x, pos + 1L), "")
+  }
+  gffExt <- ifelse(extenstion(gff) == 'gff' | extenstion(gff) == 'gff3' , yes=TRUE, no=FALSE)
+  if(gffExt == 'FALSE'){
+    stop('Input is not a gff file')
+  }
+
   # Read in the gff file
   gff <- gffRead(gffFile = gff)
 
@@ -61,17 +72,3 @@ findClosest <- function(gff, positions, strand.specific = TRUE, x){
   return(theFeature)
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
