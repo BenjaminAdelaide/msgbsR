@@ -36,6 +36,57 @@
 diffMeth <- function(countMatrix, pd, cateogory, condition1, condition2, block = NULL,
                         cpmThreshold, thresholdSamples){
 
+  # Unit tests
+  ## Check if the countMatrix is a matrix
+  countMatrixClass <- class(countMatrix)[1]
+  countMatrixClass <- ifelse(countMatrixClass == 'matrix', yes=TRUE, no=FALSE)
+  if(countMatrixClass == 'FALSE'){
+    stop('countMatrix must be a matrix')
+  }
+
+  ## Check if pd is a data.frame
+  pdClass <- class(pd)[1]
+  pdClass <- ifelse(pdClass == 'data.frame', yes=TRUE, no=FALSE)
+  if(pdClass == 'FALSE'){
+    stop('pd must be a data.frame')
+  }
+
+  ## Check if cateogory is a character
+  cateogoryClass <- class(cateogory)[1]
+  cateogoryClass <- ifelse(cateogoryClass == 'cateogory', yes=TRUE, no=FALSE)
+  if(cateogoryClass == 'FALSE'){
+    stop('cateogory must be a character')
+  }
+
+  ## Check if condition1 is a character
+  condition1Class <- class(condition1)[1]
+  condition1Class <- ifelse(condition1Class == 'cateogory', yes=TRUE, no=FALSE)
+  if(condition1Class == 'FALSE'){
+    stop('condition1 must be a character')
+  }
+
+  ## Check if condition2 is a character
+  condition2Class <- class(condition2)[1]
+  condition2Class <- ifelse(condition2Class == 'cateogory', yes=TRUE, no=FALSE)
+  if(condition2Class == 'FALSE'){
+    stop('condition2 must be a character')
+  }
+
+  ## Check if cpmThreshold is a numeric
+  cpmThresholdClass <- class(cpmThreshold)[1]
+  cpmThresholdClass <- ifelse(cpmThresholdClass == 'numeric', yes=TRUE, no=FALSE)
+  if(cpmThresholdClass == 'FALSE'){
+    stop('cpmThreshold must be a numeric')
+  }
+
+  ## Check if thresholdSamples is a numeric
+  thresholdSamplesClass <- class(thresholdSamples)[1]
+  thresholdSamplesClass <- ifelse(thresholdSamplesClass == 'numeric', yes=TRUE, no=FALSE)
+  if(thresholdSamplesClass == 'FALSE'){
+    stop('thresholdSamplesClass must be a numeric')
+  }
+
+
   # Seperate the data into the two conditions
   counts <- data.frame(countMatrix[ ,pd[,cateogory] == condition1 | pd[,cateogory] == condition2])
   group <- pd[,cateogory][pd[,cateogory] == condition1 | pd[,cateogory] == condition2]
