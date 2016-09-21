@@ -65,6 +65,14 @@ rawCounts <- function(bamFilepath, threads = 1){
     out
   }
 
+  #============================================================================================
+  # Firstly check if the threads input vaue is numeric
+  threadsClass <- class(threads)[1]
+  threadsClass <- ifelse(threadsClass == 'numeric', yes=TRUE, no=FALSE)
+  if(threadsClass == 'FALSE'){
+    stop("Please input a numeric value for the total number of threads")
+  }
+
 
   # Get a list of all the bam files
   bamFiles <- list.files(path=bamFilepath,
