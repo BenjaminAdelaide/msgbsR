@@ -70,6 +70,22 @@ rawCounts <- function(bamFilepath, threads = 1){
   bamFiles <- list.files(path=bamFilepath,
                          full.names=TRUE, pattern=".bam$")
 
+  # Get a list of all the indexed files (*.bai)
+  baiFiles <- list.files(path=bamFilepath,
+                         full.names=TRUE, pattern=".bai$")
+
+  # Make a stop function if a bam file is missing an indexed file
+  BAMS <- basename(bamFiles)
+  BAIS <- gsub('.bai', '', basename(baiFiles))
+
+  NoBAIS <- BAMS[which(BAMS %in% BAIS == 'FALSE')]
+
+  if(length(NoBAIS) != 0){
+    message <- paste(c('The following sample(s) are missing indexed files', NoBAIS), sep='\t', collapse = ', ')
+    message <- gsub('files,', 'files:', message)
+    stop(message)
+  }
+
   # Use the function readCounts to get the start position of each read
   dat <- readCounts(bamFilePath=bamFiles[1])
 
