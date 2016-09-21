@@ -53,21 +53,21 @@ diffMeth <- function(countMatrix, pd, cateogory, condition1, condition2, block =
 
   ## Check if cateogory is a character
   cateogoryClass <- class(cateogory)[1]
-  cateogoryClass <- ifelse(cateogoryClass == 'cateogory', yes=TRUE, no=FALSE)
+  cateogoryClass <- ifelse(cateogoryClass == 'character', yes=TRUE, no=FALSE)
   if(cateogoryClass == 'FALSE'){
     stop('cateogory must be a character')
   }
 
   ## Check if condition1 is a character
   condition1Class <- class(condition1)[1]
-  condition1Class <- ifelse(condition1Class == 'cateogory', yes=TRUE, no=FALSE)
+  condition1Class <- ifelse(condition1Class == 'character', yes=TRUE, no=FALSE)
   if(condition1Class == 'FALSE'){
     stop('condition1 must be a character')
   }
 
   ## Check if condition2 is a character
   condition2Class <- class(condition2)[1]
-  condition2Class <- ifelse(condition2Class == 'cateogory', yes=TRUE, no=FALSE)
+  condition2Class <- ifelse(condition2Class == 'character', yes=TRUE, no=FALSE)
   if(condition2Class == 'FALSE'){
     stop('condition2 must be a character')
   }
