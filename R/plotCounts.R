@@ -21,6 +21,14 @@
 
 plotCounts <- function(countMatrix, condition1, condition2 = NULL){
 
+  # Unit tests
+  ## Check if the countMatrix is a matrix
+  countMatrixClass <- class(countMatrix)[1]
+  countMatrixClass <- ifelse(countMatrixClass == 'matrix', yes=TRUE, no=FALSE)
+  if(countMatrixClass == 'FALSE'){
+    stop('countMatrix must be a matrix')
+  }
+
   # Determine the total number of cuts sites per sample
   # cut sites with > 1 read produced for each sample
   cuts <- data.frame(t(data.frame(lapply(1:ncol(countMatrix),function(x)
