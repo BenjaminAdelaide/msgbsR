@@ -9,7 +9,7 @@
 #' @export
 
 closestFeat <- function(gff, positions, strand.specific = TRUE){
-
+  
   ## Check if the gff is a gff file
   extenstion <- function (x)
   {
@@ -20,7 +20,7 @@ closestFeat <- function(gff, positions, strand.specific = TRUE){
   if(gffExt == 'FALSE'){
     stop('Input is not a gff file')
   }
-
+  
   # Message
   print('Reading in the gff file')
   # Read in the gff file
@@ -28,10 +28,10 @@ closestFeat <- function(gff, positions, strand.specific = TRUE){
   print('Finding closest features')
   # Start of looping through each position
   theclosestFeatures <- lapply(1:nrow(positions), function(x) findClosest(gff = gff,
-              positions = positions, strand.specific = strand.specific, x = x))
+                                                                          positions = positions, strand.specific = strand.specific, x = x))
   # Unlist the object
   theclosestFeatures <- ldply(theclosestFeatures)
-
+  
   return(theclosestFeatures)
 }
 
@@ -47,26 +47,36 @@ gffRead <- function(gffFile, nrows = -1) {
 }
 
 findClosest <- function(gff, positions, strand.specific = TRUE, x){
-
+  
   # Seperate the gff file into the chromosome of interest
-  gffChr <- gff[which(gff$seqname == positions[x,1]), ]
-
+  gffChr <- gff[which(gff$seqname == factor(positions[x,1])), ]
+  
   # Determine the closest feature in the gffChr file
   if(strand.specific == TRUE){
-
+    
     # Match up the strands (1='+' 2='-')
     strand <- as.character(ifelse(test = positions[x,2] == '1', yes = '+', no = '-'))
     gffChr <- gffChr[which(gffChr$strand == strand), ]
-
+    
   }
-
+  
   # Determine the distance from each start position
-  dist2start <- data.frame(as.numeric(rep(positions[x,3], nrow(gffChr))) - gffChr$start)
+  
+  # make a numeric vector containing the position and the starts
+  pos <- matrix(rep(positions[x,3], nrow(gffChr)))
+  pos <- as.numeric(pos)
+  starts <- as.numeric(gffChr$start)
+  
+  # substract the position from the starts
+  dist2start <- data.frame(pos - starts)
+  
+  
+  # Determine the closest feature
   dist2start[,2] <- abs(as.numeric(dist2start[,1]))
   rowNo <- which(dist2start[,2] == min(dist2start[,2])[1])[1]
-
+  
   theFeature <- data.frame(cbind(dist2start[rowNo, 1], gffChr[rowNo,c(1,3:9)]))
   colnames(theFeature)[1] <- 'Distance'
   return(theFeature)
-
+  
 }
