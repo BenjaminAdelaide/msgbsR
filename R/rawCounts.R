@@ -8,7 +8,7 @@
 #' @return Produces a data frame where the rows correspond to cut sites and columns are the samples. Cut sites are given a unique ID (chromosome:strand:position).
 #' @examples
 #' \dontrun{
-#' datCounts <- rawCounts(bamFilePath = 'path-to-bam-files', threads = 2)
+#' datCounts <- rawCounts(bamFilePath, threads = 1)
 #' }
 #' @author Benjamin Mayne, Sam Buckberry
 #' @export
@@ -93,6 +93,9 @@ rawCounts <- function(bamFilepath, threads = 1){
     message <- gsub('files,', 'files:', message)
     stop(message)
   }
+  
+  # Check that the BAM files are missing a EOF header
+  validate(BamFileList(bamFiles,index=bamFiles))
 
   # Use the function readCounts to get the start position of each read
   dat <- readCounts(bamFilePath=bamFiles[1])
