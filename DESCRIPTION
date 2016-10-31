@@ -1,13 +1,15 @@
-Package: gbsR
+Package: msgbsR
 Type: Package
-Title: gbsR: genotyping by sequencing (GBS) R functions
-Version: 0.1.0
+Title: msgbsR: methylation sensitive genotyping by sequencing (MS-GBS) R functions
+Version: 0.99.0
+Date: 2016-11-01
 Author: Benjamin Mayne
 Maintainer: Benjamin Mayne <benjamin.mayne@adelaide.edu.au>
-Description: Quantitates read counts from a GBS experiment
+Description: Pipeline for the anaysis of a MS-GBS experiment
 License: GPL-3
-Collate: 'rawCounts.R' 'checkCuts.R' 'plotCounts.R' 'diffCutting.R' 'plotCircos.R' 'plotChr.R' 'closestFeat.R'
-LazyData: TRUE
+Collate: 'rawCounts.R' 'checkCuts.R' 'plotCounts.R' 'diffMeth.R' 'plotCircos.R' 'plotChr.R' 'closestFeat.R'
+LazyData: true
 RoxygenNote: 5.0.1
-Depends: ggplot2, parallel, plyr, Rsamtools, bedr, edgeR, limma, GenomicRanges, ggbio, R (>= 3.0.2)
+Depends: ggplot2, R.utils, parallel, plyr, Rsamtools, edgeR, easyRNASeq, limma, GenomicRanges, ggbio, R (>= 3.0.2)
 Suggests:BiocGenerics
+biocViews: DifferentialMethylation, DataImport, Epigenetics, MethylSeq
