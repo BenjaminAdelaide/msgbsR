@@ -38,7 +38,9 @@ checkCuts <- function(cutSites, cutIDs, fastaPath = NULL, BSgenome = NULL, seq){
   }
   fastaExt <- ifelse(extenstion(fastaPath) == 'gz', yes=TRUE, no=FALSE)
   if(fastaExt == 'TRUE'){
-    stop('fasta file is compressed, please uncompress the file before using checkCuts')
+    print('Uncompressing fasta file')
+    gunzip(fastaPath)
+    fastaPath <- gsub('.gz', '', fastaPath)
   }
   }
 
@@ -87,6 +89,13 @@ checkCuts <- function(cutSites, cutIDs, fastaPath = NULL, BSgenome = NULL, seq){
   if(is.null(fastaPath) == FALSE){
   # Scan the fasta file for the sequences
   sequences <- data.frame(scanFa(fastaPath, cuts.gr))
+
+  if(fastaExt == 'TRUE'){
+    print('Compressing fasta file')
+    gzip(fastaPath)
+  }
+
+
   } else if(is.null(BSgenome) == FALSE) {
   sequences <- data.frame(getSeq(BSgenome, cuts.gr))
   }
