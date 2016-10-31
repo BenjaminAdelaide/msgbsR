@@ -19,7 +19,7 @@ Imports the raw read counts from sorted and indexed bam file(s)
 }
 \examples{
 \dontrun{
-datCounts <- rawCounts(bamFilePath = 'path-to-bam-files', threads = 2)
+datCounts <- rawCounts(bamFilePath, threads = 1)
 }
 }
 \author{
