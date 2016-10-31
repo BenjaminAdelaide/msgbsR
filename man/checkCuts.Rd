@@ -4,32 +4,23 @@
 \alias{checkCuts}
 \title{checkCuts}
 \usage{
-checkCuts(cutSites = my_cuts, cutIDs = my_IDs, fastaPath = 'path-to-fasta-file', seq = sequence, chr.prefix = TRUE)
+checkCuts(cutSites, cutIDs, fastaPath, BSgenome seq)
 }
 \arguments{
-\item{cutSites}{A matrix where the first column is the chromosome ID, the second column is the starting position and the third column is the ending position.}
+\item{cutSites}{A matrix where the first column is the chromosome ID, the second column is the starting position and the third column is the ending position of the cut site sequence.}
 
 \item{cutIDs}{A character vector containing unique IDs for each cut site.}
 
-\item{fastaPath}{The path to fasta file to be checked against.}
+\item{fastaPath}{The path to fasta file to be checked against, if not using a BSgenome.}
+
+\item{BSgenome}{The name of the species BSgenome to be used, if not using a fasta file.}
 
 \item{seq}{The desired sequence that the enzyme should have cut.}
 
 \item{chr.prefix}{Is there a chr prefix in the first column of cutSites. Default is TRUE.}
 }
 \description{
-Determines the sequence around a cut site
-}
-\examples{
-\dontrun{
-# Firstly generate a matrix containing some MspI cut sites (sequence=CCGG)
-x <- matrix(data=c(rep('chr1', 3), '29736', '120552', '297122',
-                                   '29736', '120552', '297122'))
-x[,3] <- as.numeric(x[,2]) + 2
-x[,2] <- as.numeric(x[,2]) - 2
-y <- c('A', 'B', 'C')
-my_cuts <- checkCuts(cutSites=x, cutIDs=y fastaPath='/hg38/genome.fa', seq='CCGG')
-}
+Determines the sequence around a cut site using a fasta file
 }
 \author{
 Benjamin Mayne
