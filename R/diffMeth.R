@@ -29,7 +29,8 @@
 #' }
 #' @author Benjamin Mayne
 #' @export
-
+#' @import edgeR
+#' @importFrom stats model.matrix relevel
 
 # Function for determining differential cutting
 
