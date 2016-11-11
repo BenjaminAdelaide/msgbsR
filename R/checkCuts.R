@@ -7,10 +7,12 @@
 #' @param fastaPath The path to fasta file to be checked against, if not using a BSgenome.
 #' @param BSgenome The name of the species BSgenome to be used, if not using a fasta file.
 #' @param seq The desired sequence that the enzyme should have cut.
-#' @param chr.prefix Is there a chr prefix in the first column of cutSites. Default is TRUE.
-#' @usage checkCuts(cutSites, cutIDs, fastaPath, BSgenome seq)
+#' @usage checkCuts(cutSites, cutIDs, fastaPath, BSgenome, seq)
 #' @author Benjamin Mayne
 #' @export
+#' @importFrom R.utils gunzip gzip
+#' @importFrom GenomicRanges makeGRangesFromDataFrame
+
 
 checkCuts <- function(cutSites, cutIDs, fastaPath = NULL, BSgenome = NULL, seq){
 
