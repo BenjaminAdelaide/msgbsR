@@ -4,12 +4,12 @@
 \alias{rawCounts}
 \title{rawCounts}
 \usage{
-rawCounts(bamFilepath = 'path-to-bam-files', threads = 1)
+rawCounts(bamFilepath, threads = 1)
 }
 \arguments{
-\item{threads}{The total number of usable threads to be used. Default is 1.}
+\item{bamFilepath}{The path to the location of bam file(s).}
 
-\item{bamFilePath}{The path to the location of bam file(s).}
+\item{threads}{The total number of usable threads to be used. Default is 1.}
 }
 \value{
 Produces a data frame where the rows correspond to cut sites and columns are the samples. Cut sites are given a unique ID (chromosome:strand:position).
@@ -19,7 +19,7 @@ Imports the raw read counts from sorted and indexed bam file(s)
 }
 \examples{
 \dontrun{
-datCounts <- rawCounts(bamFilePath, threads = 1)
+datCounts <- rawCounts(bamFilepath, threads = 1)
 }
 }
 \author{
