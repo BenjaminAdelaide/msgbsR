@@ -2,22 +2,28 @@
 #'
 #' Imports the raw read counts from sorted and indexed bam file(s)
 #'
-#' @param bamFilePath The path to the location of bam file(s).
+#' @param bamFilepath The path to the location of bam file(s).
 #' @param threads The total number of usable threads to be used. Default is 1.
-#' @usage rawCounts(bamFilepath = 'path-to-bam-files', threads = 1)
+#' @usage rawCounts(bamFilepath, threads = 1)
 #' @return Produces a data frame where the rows correspond to cut sites and columns are the samples. Cut sites are given a unique ID (chromosome:strand:position).
 #' @examples
 #' \dontrun{
-#' datCounts <- rawCounts(bamFilePath, threads = 1)
+#' datCounts <- rawCounts(bamFilepath, threads = 1)
 #' }
 #' @author Benjamin Mayne, Sam Buckberry
 #' @export
+#' @importFrom easyRNASeq validate BamFileList
+#' @import Rsamtools
+#' @import GenomicFeatures
+#' @import GenomicRanges
+#' @import plyr
+#' @import parallel
 
 # Function to make the raw count matrix
 rawCounts <- function(bamFilepath, threads = 1){
 
   # function to get counts for start of each read
-  readCounts <- function(bamFilePath){
+  readCounts <- function(bamFilepath){
     # Set the features to extract for each BAM record
     what <- c("rname", "strand", "pos", "qwidth")
     # Set the scan parameters
@@ -25,7 +31,7 @@ rawCounts <- function(bamFilepath, threads = 1){
                                                isUnmappedQuery=FALSE),
                               what=what)
 
-    bam <- scanBam(bamFilePath, param=scanParam)
+    bam <- scanBam(bamFilepath, param=scanParam)
 
     # Get the bam data in a list as per the Rsamtools documentation
     lst <- lapply(names(bam[[1]]), function(elt) {
@@ -33,7 +39,7 @@ rawCounts <- function(bamFilepath, threads = 1){
     })
     names(lst) <- names(bam[[1]])
 
-    df <- do.call("DataFrame", lst)
+    df <- do.call("data.frame", lst)
 
     # Get the position of the read for + and - strand. Remember the mapping
     # to the minus strand has the read in the opposite orientation
@@ -49,17 +55,16 @@ rawCounts <- function(bamFilepath, threads = 1){
     # remove the irrelevant columns
     df <- df[ ,c(1, 2, 5)]
     df <- data.frame(df)
-    head(df)
 
     # Count the number of reads starting at each locus
-    out <- ddply(df, .(rname, strand, readStart), .fun=nrow)
+    out <- ddply(df, c('rname', 'strand', 'readStart'), .fun=nrow)
     colnames(out)[4] <- "count"
 
     # Create a unique locus identifier
     out$id <- paste(out$rname, out$strand, out$readStart, sep=":")
 
     # Add the sample name
-    out$sample <- basename(bamFilePath)
+    out$sample <- basename(bamFilepath)
 
     # output the dataframe
     out
@@ -93,12 +98,12 @@ rawCounts <- function(bamFilepath, threads = 1){
     message <- gsub('files,', 'files:', message)
     stop(message)
   }
-  
+
   # Check that the BAM files are missing a EOF header
   validate(BamFileList(bamFiles,index=bamFiles))
 
   # Use the function readCounts to get the start position of each read
-  dat <- readCounts(bamFilePath=bamFiles[1])
+  dat <- readCounts(bamFilepath=bamFiles[1])
 
   ###### Insert a stop function here if any are duplicated ##########
   anyDuplicated(dat$id)
