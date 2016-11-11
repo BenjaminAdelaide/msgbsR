@@ -24,7 +24,7 @@
 
 \section{Introduction}
 
-Current GBS data analysis tools do not fulfil all experimental designs. For example, genotyping by sequencing (GBS) experiments using methylation sensitive restriction enzyme (REs), which is also known as methylation sensitive genotyping by sequencing (MS-GBS), is an effective method to identify differentially methylated sites that may not be accessible in other technologies such as microarrays and capture sequencing. However, current data analysis tools do not satisfy the requirements for these types of experimental designs.
+Current data analysis tools do not fulfil all experimental designs. For example, GBS experiments using methylation sensitive restriction enzymes (REs), which is also known as methylation sensitive genotyping by sequencing (MS-GBS), is an effective method to identify differentially methylated sites that may not be accessible in other technologies such as microarrays and methyl capture sequencing. However, current data analysis tools do not satisfy the requirements for these types of experimental designs.
 
 Here we present msgbsR, an R package for data analysis of MS-GBS experiments. Read counts and cut sites from a MS-GBS experiment can be read directly into the R environment from a sorted and indexed BAM file(s).
 
@@ -47,7 +47,7 @@ The result is a data frame object containing a table of read counts. The columns
 
 \section{Confirmation of correct cut sites}
 
-After the table of read counts has been generated into the R environment, the next step would be to confirm that the cut sites were the correctly generated sites. In this example, the restriction enzyme that has been used is MspI which recognizes a 4bp sequence (CCGG).
+After the table of read counts has been generated into the R environment, the next step is to confirm that the cut sites were the correctly generated sites. In this example, the restriction enzyme that has been used is MspI which recognizes a 4bp sequence (CCGG).
 
 The first step is to extract the location of the cut sites from datCounts and adjust the cut sites such that the region will cover the recognition sequence of MspI.
 
@@ -134,7 +134,7 @@ The top object now contains a data frame of the cut sites that had a CPM > 1 in 
 
 \section{Visualization of cut site locations}
 
-The msgbsR package contains 2 functions to allow visualization of the location of the cut sites. Given the lengths of the chromosomes the cut sites can be visualized in a circos plot (Figure 2) or a karyogram (Figure 3). For example, differentially methylated sites can be visualized in a circos plot or a karyogram.
+The msgbsR package contains 2 functions to allow visualization of the location of the cut sites. Given the lengths of the chromosomes the cut sites can be visualized in a circos plot (Figure 2) or a karyogram (Figure 3).
 
 Firstly, define the length of the chromosome.
 <<chr22 length>>=
@@ -170,7 +170,7 @@ plotCircos(cutSites = z[,c(1,3,3)], genome = chr22,
 
 @
 \end{center}
-\caption{A circos plot of chromosome 22 representing the top 100 differential methylated cut sites.}
+\caption{A circos plot of chromosome 22 representing the top 100 differentially methylated cut sites.}
 \label{fig:fig2}
 \end{figure}
 
@@ -184,7 +184,7 @@ plotCircos(cutSites = z[,c(1,3,3)], genome = chr22,
 plotChr(cutSites = z[,c(1,3,3)], genome = chr22)
 @
 \end{center}
-\caption{A karyogram of chromosome 22 showing the location of differential methylated cut sites.}
+\caption{A karyogram of chromosome 22 showing the location of differentially methylated cut sites.}
 \label{fig:fig3}
 \end{figure}
 
