@@ -18,6 +18,8 @@
 #' }
 #' @author Benjamin Mayne
 #' @export
+#' @importFrom ggplot2 qplot
+
 
 plotCounts <- function(countMatrix, condition1, condition2 = NULL){
 
