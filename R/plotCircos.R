@@ -19,6 +19,12 @@
 #' }
 #' @author Benjamin Mayne
 #' @export
+#' @importFrom  S4Vectors Rle
+#' @import GenomicRanges
+#' @import GenomeInfoDb
+#' @importFrom IRanges IRanges
+#' @importFrom ggbio autoplot circle ggbio
+#' @importFrom ggplot2 qplot aes
 
 plotCircos <- function(cutSites, genome, cutSite.colour, genome.colour){
 
