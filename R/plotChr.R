@@ -17,6 +17,12 @@
 #' }
 #' @author Benjamin Mayne
 #' @export
+#' @importFrom  S4Vectors Rle
+#' @import GenomicRanges
+#' @import GenomeInfoDb
+#' @importFrom IRanges IRanges
+#' @importFrom ggbio autoplot circle ggbio layout_karyogram autoplot
+#' @importFrom ggplot2 qplot aes
 
 plotChr <- function(cutSites, genome){
 
