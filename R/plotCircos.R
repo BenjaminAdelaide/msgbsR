@@ -24,7 +24,7 @@
 #' @import GenomeInfoDb
 #' @importFrom IRanges IRanges
 #' @importFrom ggbio autoplot circle ggbio
-#' @importFrom ggplot2 qplot aes
+#' @import ggplot2 
 
 plotCircos <- function(cutSites, genome, cutSite.colour, genome.colour){
 
