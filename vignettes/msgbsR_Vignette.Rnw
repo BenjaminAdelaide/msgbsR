@@ -196,7 +196,6 @@ The msgbsR package can also work with gff3 files to annotate interesting positio
 To annotate interesting cut sites:
 <<annotation>>=
 mygff <- system.file("extdata", "chr20.gff3", package = 'msgbsR')
-z[ ,1] <- gsub('chr', '', z[,1])
 features <- closestFeat(gff = mygff, positions = z[1:100,],
                         strand.specific = FALSE)
 features[1:5,1:5]
