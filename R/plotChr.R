@@ -18,7 +18,7 @@
 #' '500', '1000', '750', '400',
 #' '500', '1000', '750', '400'), nrow=4, ncol=3)
 #' my_genome <- matrix(c('chr1', 'chr2', 'chr3', 'chr4',
-#'                    '1000', '2000','1500', '800'), nrow=4, ncol=3)
+#'                    '1000', '2000','1500', '800'), nrow=4, ncol=2)
 #' plotChr(cutSites = my_cuts, genome = my_genome)
 #'
 #' @export
