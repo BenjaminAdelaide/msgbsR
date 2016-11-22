@@ -22,7 +22,7 @@ Plot the total number of reads vs total number of cut sites per sample
 \examples{
 # Generate a random matrix
 set.seed(1)
-x <- data.frame(matrix(sample(0:100, size = 10000*10, replace = TRUE), nrow = 10000, ncol = 10))
+x <- matrix(sample(0:100, size = 10000*10, replace = TRUE), nrow = 10000, ncol = 10)
 y <- c(rep('A', 5), rep('B', 5))
 z <- c(rep('C', 3), rep('D', 2), rep('E', 2), rep('F', 3))
 
