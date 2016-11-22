@@ -9,6 +9,7 @@
 #' @param seq The desired sequence that the enzyme should have cut.
 #' @usage checkCuts(cutSites, cutIDs, fastaPath, BSgenome, seq)
 #' @author Benjamin Mayne
+#' @return cut sites that match the input sequence
 #' @importFrom R.utils gunzip gzip
 #' @importFrom GenomicRanges makeGRangesFromDataFrame
 #' @examples

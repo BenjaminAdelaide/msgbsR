@@ -12,6 +12,7 @@
 #' @param thresholdSamples Minimum number of samples to contain the counts per million threshold.
 #' @return A data frame containing which cut sites are differenitally cut.
 #' @import edgeR
+#' @import stats
 #' @author Benjamin Mayne
 #' @examples
 #' # Make a read counts data frame
