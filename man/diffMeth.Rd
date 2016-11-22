@@ -33,7 +33,7 @@ Determines differential methylated sites from a matrix of read counts
 \examples{
 # Make a read counts data frame
 set.seed(1)
-x <- atrix(sample(0:100, size = 10000*10, replace = TRUE), nrow = 10000, ncol = 10)
+x <- matrix(sample(0:100, size = 10000*10, replace = TRUE), nrow = 10000, ncol = 10)
 # Set the groups and blocking factor
 y <- data.frame(c(rep('A', 5), rep('B', 5)))
 colnames(y) <- 'group'
