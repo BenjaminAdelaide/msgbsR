@@ -6,7 +6,7 @@
 #' @param condition1 A character vector containing a certain condition of the samples.
 #' @param condition2 A character vector containing another certain condition of the samples. Default is NULL.
 #' @return Produces a plot showing the total number reads vs total number of cut site per sample.
-#' @importFrom ggplot2 qplot
+#' @import ggplot2
 #' @author Benjamin Mayne
 #' @examples
 #' data <- system.file("extdata", "datCounts_filtered.Rdata", package = 'msgbsR')
