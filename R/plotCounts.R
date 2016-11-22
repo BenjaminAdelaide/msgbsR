@@ -9,13 +9,11 @@
 #' @importFrom ggplot2 qplot
 #' @author Benjamin Mayne
 #' @examples
-#' # Generate a random matrix
-#' set.seed(1)
-#' x <- matrix(sample(0:100, size = 10000*10, replace = TRUE), nrow = 10000, ncol = 10)
-#' y <- c(rep('A', 5), rep('B', 5))
-#' z <- c(rep('C', 3), rep('D', 2), rep('E', 2), rep('F', 3))
-#'
-#' plotCounts(x,y,z)
+#' data <- system.file("extdata", "datCounts_filtered.Rdata", package = 'msgbsR')
+#' load(data)
+#' y <- data.frame(c(rep('Control', 3), rep('Fat Diet', 3)))
+#' colnames(y) <- 'Group'
+#' plotCounts(countMatrix = datCounts, condition1 = y$Group)
 #' @export
 
 
