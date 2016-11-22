@@ -6,7 +6,7 @@ Date: 2016-11-11
 Author: Benjamin Mayne
 Maintainer: Benjamin Mayne <benjamin.mayne@adelaide.edu.au>
 Depends: R (>= 2.10)
-Imports: ggbio, ggplot2, GenomicFeatures, GenomicRanges, GenomeInfoDb, Rsamtools, edgeR, easyRNASeq, R.utils, utils, parallel, plyr, IRanges, S4Vectors, BSgenome.Hsapiens.UCSC.hg38
+Imports: ggbio, ggplot2, GenomicFeatures, GenomicRanges, GenomeInfoDb, Rsamtools, edgeR, easyRNASeq, R.utils, utils, parallel, plyr, IRanges, S4Vectors, BSgenome.Rnorvegicus.UCSC.rn6
 Suggests: BiocGenerics, roxygen2
 biocViews: DifferentialMethylation, DataImport, Epigenetics, MethylSeq
 Description: Pipeline for the anaysis of a MS-GBS experiment.
