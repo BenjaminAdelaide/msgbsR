@@ -22,7 +22,7 @@
 #' @import GenomeInfoDb
 #' @importFrom IRanges IRanges
 #' @importFrom ggbio autoplot circle ggbio layout_karyogram autoplot
-#' @importFrom ggplot2 qplot aes
+#' @import ggplot2 
 
 plotChr <- function(cutSites, genome){
 
