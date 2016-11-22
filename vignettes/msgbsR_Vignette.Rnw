@@ -36,6 +36,7 @@ To read in the data directly into the R environment can be done using the rawCou
 
 <<load the example data>>=
 library(msgbsR)
+library(ggplot2)
 
 my_path <- system.file("extdata", "Control_1.bam", package = 'msgbsR')
 my_path <- gsub('Control_1.bam', '', my_path)
