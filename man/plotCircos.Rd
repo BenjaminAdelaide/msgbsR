@@ -22,13 +22,11 @@ A circos plot showing the locations of the cut sites.
 Plot a circos representing the cut site locations
 }
 \examples{
-my_cuts <- matrix(c('chr1', 'chr2', 'chr3', 'chr4',
-'500', '1000', '750', '400',
-'500', '1000', '750', '400'), nrow=4, ncol=3)
-my_genome <- matrix(c('chr1', 'chr2', 'chr3', 'chr4',
-                   '1000', '2000','1500', '800'), nrow=4, ncol=2)
-plotCircos(cutSites = my_cuts, genome = my_genome, cutSite.colour = 'red', genome.colour = 'green')
-
+chr20 <- matrix(c('chr20', '56205956'), nrow = 1, ncol = 2)
+data <- system.file("extdata", "exampleSites.Rdata", package = 'msgbsR')
+load(data)
+plotCircos(cutSites = z[,c(1,3,3)], genome = chr20,
+          cutSite.colour = 'red', genome.colour = 'green')
 }
 \author{
 Benjamin Mayne
