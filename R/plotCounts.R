@@ -19,6 +19,7 @@
 
 
 plotCounts <- function(countMatrix, condition1, condition2 = NULL){
+  requireNamespace('ggplot2', quietly = TRUE)
 
   # Unit tests
   ## Check if the countMatrix is a matrix

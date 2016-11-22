@@ -25,7 +25,7 @@
 
 
 plotChr <- function(cutSites, genome){
-
+  requireNamespace('ggplot2', quietly = TRUE)
   # Add another column into the genome matrix of 1s
   genome <- as.matrix(cbind(genome, rep(1, nrow(genome))))
   genome <- as.matrix(data.frame(genome)[ ,c(1,3,2)])

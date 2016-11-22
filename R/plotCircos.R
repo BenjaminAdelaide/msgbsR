@@ -26,6 +26,7 @@
 
 
 plotCircos <- function(cutSites, genome, cutSite.colour, genome.colour){
+  requireNamespace('ggplot2', quietly = TRUE)
 
   # Add another column into the genome matrix of 1s
   genome <- as.matrix(cbind(genome, rep(1, nrow(genome))))
