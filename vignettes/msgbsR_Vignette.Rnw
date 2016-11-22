@@ -134,14 +134,14 @@ The top object now contains a data frame of the cut sites that had a CPM > 1 in 
 
 \section{Visualization of cut site locations}
 
-The msgbsR package contains 2 functions to allow visualization of the location of the cut sites. Given the lengths of the chromosomes the cut sites can be visualized in a circos plot (Figure 2) or a karyogram (Figure 3).
+The msgbsR package contains a functions to allow visualization of the location of the cut sites. Given the lengths of the chromosomes the cut sites can be visualized in a circos plot (Figure 2).
 
 Firstly, define the length of the chromosome.
 <<chr22 length>>=
 chr20 <- matrix(c('chr20', '56205956'), nrow = 1, ncol = 2)
 @
 
-Extract the top 100 most differentially methylated cut sites.
+Extract the differentially methylated cut sites.
 <<top sites>>=
 z <- top$cut_site[which(top$PValue < 0.05)]
 z <- data.frame(t(data.frame(strsplit(x=as.character(z), split=':'))))
@@ -156,11 +156,6 @@ plotCircos(cutSites = z[,c(1,3,3)], genome = chr20,
 
 @
 
-To generate a karogram plot:
-<<karyogram plot>>=
-plotChr(cutSites = z[,c(1,3,3)], genome = chr20)
-@
-
 \setkeys{Gin}{width=1\linewidth}
 \begin{figure}
 \begin{center}
@@ -172,20 +167,6 @@ plotCircos(cutSites = z[,c(1,3,3)], genome = chr20,
 \end{center}
 \caption{A circos plot of chromosome 20 representing cut sites defined by the user.}
 \label{fig:fig2}
-\end{figure}
-
-\clearpage
-
-
-\setkeys{Gin}{width=1\linewidth}
-\begin{figure}
-\begin{center}
-<<label=fig3, fig=TRUE, echo=FALSE, eps=FALSE, >>=
-plotChr(cutSites = z[,c(1,3,3)], genome = chr20)
-@
-\end{center}
-\caption{A karyogram of chromosome 20 showing cut sites defined by the user.}
-\label{fig:fig3}
 \end{figure}
 
 \clearpage
