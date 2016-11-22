@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2016.10.28)  22 NOV 2016 16:53
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2016.10.28)  22 NOV 2016 17:37
 entering extended mode
 **./msgbsR_Vignette.tex
 (msgbsR_Vignette.tex
@@ -755,27 +755,27 @@ File: t1aer.fd 1997/11/16 Font definitions for T1/aer.
 )))) (msgbsR_Vignette.aux)
 \openout1 = `msgbsR_Vignette.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 16.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 16.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 15.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 15.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\base\ts1cmr.fd"
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    ... okay on input line 15.
 
 ("C:\Program Files\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -804,7 +804,7 @@ G,.JBIG2,.JB2,.eps]
 (grfext)             \AppendGraphicsExtensions on input line 456.
 )
 \AtBeginShipoutBox=\box30
-Package hyperref Info: Link coloring OFF on input line 16.
+Package hyperref Info: Link coloring OFF on input line 15.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\hyperref\nameref.sty"
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
@@ -814,9 +814,9 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
 \c@section@level=\count120
 )
-LaTeX Info: Redefining \ref on input line 16.
-LaTeX Info: Redefining \pageref on input line 16.
-LaTeX Info: Redefining \nameref on input line 16.
+LaTeX Info: Redefining \ref on input line 15.
+LaTeX Info: Redefining \pageref on input line 15.
+LaTeX Info: Redefining \nameref on input line 15.
 
 (msgbsR_Vignette.out) (msgbsR_Vignette.out)
 \@outlinefile=\write4
@@ -830,24 +830,24 @@ LaTeX Info: Redefining \nameref on input line 16.
  [1
 
 {C:/Users/Benjamin/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-LaTeX Font Info:    Try loading font information for T1+aett on input line 40.
+LaTeX Font Info:    Try loading font information for T1+aett on input line 39.
  ("C:\Program Files\MiKTeX 2.9\tex\latex\ae\t1aett.fd"
 File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
 )
-LaTeX Font Info:    Try loading font information for TS1+aett on input line 43.
+LaTeX Font Info:    Try loading font information for TS1+aett on input line 42.
 
 
 (C:/PROGRA~1/R/R-33~1.1/share/texmf/tex/latex\ts1aett.fd
 File: ts1aett.fd 
 )
-LaTeX Font Info:    Try loading font information for TS1+cmtt on input line 43.
+LaTeX Font Info:    Try loading font information for TS1+cmtt on input line 42.
 
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\base\ts1cmtt.fd"
 File: ts1cmtt.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `TS1/aett/m/sl' in size <10> not available
-(Font)              Font shape `TS1/cmtt/m/sl' tried instead on input line 43.
+(Font)              Font shape `TS1/cmtt/m/sl' tried instead on input line 42.
  [2
 
 ] [3]
@@ -855,14 +855,14 @@ LaTeX Font Info:    Font shape `TS1/aett/m/sl' in size <10> not available
 File: msgbsR_Vignette-fig1.pdf Graphic file (type pdf)
 
 <use msgbsR_Vignette-fig1.pdf>
-Package pdftex.def Info: msgbsR_Vignette-fig1.pdf used on input line 125.
+Package pdftex.def Info: msgbsR_Vignette-fig1.pdf used on input line 124.
 (pdftex.def)             Requested size: 345.0pt x 345.01738pt.
  [4] [5 <./msgbsR_Vignette-fig1.pdf>]
 <msgbsR_Vignette-fig2.pdf, id=86, 433.62pt x 433.62pt>
 File: msgbsR_Vignette-fig2.pdf Graphic file (type pdf)
 
 <use msgbsR_Vignette-fig2.pdf>
-Package pdftex.def Info: msgbsR_Vignette-fig2.pdf used on input line 190.
+Package pdftex.def Info: msgbsR_Vignette-fig2.pdf used on input line 189.
 (pdftex.def)             Requested size: 345.0pt x 345.01738pt.
  [6
 
@@ -871,22 +871,22 @@ Package pdftex.def Info: msgbsR_Vignette-fig2.pdf used on input line 190.
 File: msgbsR_Vignette-fig3.pdf Graphic file (type pdf)
 
 <use msgbsR_Vignette-fig3.pdf>
-Package pdftex.def Info: msgbsR_Vignette-fig3.pdf used on input line 202.
+Package pdftex.def Info: msgbsR_Vignette-fig3.pdf used on input line 201.
 (pdftex.def)             Requested size: 345.0pt x 345.01738pt.
  [8 <./msgbsR_Vignette-fig3.pdf>] [9
 
 
 ] [10]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 316.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 315.
 
 [11]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 316.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 315.
  (msgbsR_Vignette.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 316.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 316.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 315.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 315.
 Package rerunfilecheck Info: File `msgbsR_Vignette.out' has not changed.
 (rerunfilecheck)             Checksum: 770A597DF865284D2D951D27F486CB11;523.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 316.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 315.
  ) 
 Here is how much of TeX's memory you used:
  7619 strings out of 493334
@@ -905,7 +905,7 @@ MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX 2.
 9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files/MiKTeX 2.9/fonts/t
 ype1/public/amsfonts/cm/cmsltt10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/p
 ublic/amsfonts/cm/cmtt10.pfb>
-Output written on msgbsR_Vignette.pdf (11 pages, 184311 bytes).
+Output written on msgbsR_Vignette.pdf (11 pages, 184310 bytes).
 PDF statistics:
  165 PDF objects out of 1000 (max. 8388607)
  26 named destinations out of 1000 (max. 500000)

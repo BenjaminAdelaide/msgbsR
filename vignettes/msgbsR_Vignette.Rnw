@@ -10,7 +10,6 @@
 \usepackage{hyperref}
 
 % \VignetteIndexEntry{msgbsR_Example}
-%\VignetteEngine{knitr::knitr}
 
 \begin{document}
 \SweaveOpts{concordance=TRUE}
