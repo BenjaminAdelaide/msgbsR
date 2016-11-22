@@ -5,7 +5,7 @@ Version: 0.99.0
 Date: 2016-11-11
 Author: Benjamin Mayne
 Maintainer: Benjamin Mayne <benjamin.mayne@adelaide.edu.au>
-Depends: R (>= 2.10)
+Depends: R (>= 3.3.1)
 Imports: ggbio, ggplot2, GenomicFeatures, GenomicRanges, GenomeInfoDb, Rsamtools, edgeR, easyRNASeq, R.utils, utils, parallel, plyr, IRanges, S4Vectors, BSgenome.Rnorvegicus.UCSC.rn6
 Suggests: BiocGenerics, roxygen2
 biocViews: DifferentialMethylation, DataImport, Epigenetics, MethylSeq
