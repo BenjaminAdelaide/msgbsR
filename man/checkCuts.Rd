@@ -17,6 +17,9 @@ checkCuts(cutSites, cutIDs, fastaPath, BSgenome, seq)
 
 \item{seq}{The desired sequence that the enzyme should have cut.}
 }
+\value{
+cut sites that match the input sequence
+}
 \description{
 Determines the sequence around a cut site using a fasta file
 }
