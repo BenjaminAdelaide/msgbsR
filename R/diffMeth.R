@@ -11,9 +11,9 @@
 #' @param cpmThreshold Counts per million threshold of read counts to be filtered out of the analysis.
 #' @param thresholdSamples Minimum number of samples to contain the counts per million threshold.
 #' @return A data frame containing which cut sites are differenitally cut.
+#' @import edgeR
+#' @author Benjamin Mayne
 #' @examples
-#' \dontrun{
-#'
 #' # Make a read counts data frame
 #' set.seed(1)
 #' x <- data.frame(matrix(sample(0:100, size = 10000*10, replace = TRUE), nrow = 10000, ncol = 10))
@@ -26,11 +26,8 @@
 #' z <- diffMeth(countMatrix = x, pd = y, cateogory = 'group', condition1 = 'A',
 #'               condition2 = 'B', block = 'Block', cpmThreshold = 1, thresholdSamples =3)
 #'
-#' }
-#' @author Benjamin Mayne
 #' @export
-#' @import edgeR
-#' @importFrom stats model.matrix relevel
+
 
 # Function for determining differential cutting
 

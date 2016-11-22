@@ -7,8 +7,15 @@
 #' @param cutSite.colour The colour of the cut sites.
 #' @param genome.colour The colour of the chromosomes
 #' @usage plotCircos(cutSites, genome, cutSite.colour, genome.colour)
+#' @return A circos plot showing the locations of the cut sites.
+#' @importFrom  S4Vectors Rle
+#' @import GenomicRanges
+#' @import GenomeInfoDb
+#' @importFrom IRanges IRanges
+#' @importFrom ggbio autoplot circle ggbio
+#' @import ggplot2
+#' @author Benjamin Mayne
 #' @examples
-#' \dontrun{
 #' my_cuts <- matrix(c('chr1', 'chr2', 'chr3', 'chr4',
 #' '500', '1000', '750', '400',
 #' '500', '1000', '750', '400'), nrow=4, ncol=3)
@@ -16,15 +23,8 @@
 #'                    '1000', '2000','1500', '800'), nrow=4, ncol=3)
 #' plotCircos(cutSites = my_cuts, genome = my_genome, cutSite.colour = 'red', genome.colour = 'green')
 #'
-#' }
-#' @author Benjamin Mayne
 #' @export
-#' @importFrom  S4Vectors Rle
-#' @import GenomicRanges
-#' @import GenomeInfoDb
-#' @importFrom IRanges IRanges
-#' @importFrom ggbio autoplot circle ggbio
-#' @import ggplot2 
+
 
 plotCircos <- function(cutSites, genome, cutSite.colour, genome.colour){
 
@@ -36,7 +36,7 @@ plotCircos <- function(cutSites, genome, cutSite.colour, genome.colour){
   cutSites.gr <- GRanges(seqnames = Rle(values = c(cutSites[,1]), lengths = as.numeric(rep('1', nrow(cutSites)))),
                          ranges = IRanges(start = as.numeric(cutSites[,2]), end = as.numeric(cutSites[,3])))
   genome.gr <- GRanges(seqnames = Rle(values = c(genome[,1]), lengths = as.numeric(rep('1', nrow(genome)))),
-                         ranges = IRanges(start = as.numeric(genome[,2]), end = as.numeric(genome[,3])))
+                       ranges = IRanges(start = as.numeric(genome[,2]), end = as.numeric(genome[,3])))
 
   #seqnames(cutSites.gr) <- seqnames(genome.gr)
   seqlevels(genome.gr) <- as.character(genome[,1])

@@ -5,8 +5,15 @@
 #' @param cutSites A matrix consisting of three columns, where the first column is the chromosome ID, the second and third column being the start and end position of the cut site respectively.
 #' @param genome A matrix with the lengths of the chromosomes. The first column is the chromosome ID and the second is the length of each chromosome.
 #' @usage plotChr(cutSites, genome)
+#' @return An ideogram showing the locations of the cut sites.
+#' @importFrom  S4Vectors Rle
+#' @import GenomicRanges
+#' @import GenomeInfoDb
+#' @importFrom IRanges IRanges
+#' @importFrom ggbio autoplot circle ggbio layout_karyogram autoplot
+#' @import ggplot2
+#' @author Benjamin Mayne
 #' @examples
-#' \dontrun{
 #' my_cuts <- matrix(c('chr1', 'chr2', 'chr3', 'chr4',
 #' '500', '1000', '750', '400',
 #' '500', '1000', '750', '400'), nrow=4, ncol=3)
@@ -14,15 +21,8 @@
 #'                    '1000', '2000','1500', '800'), nrow=4, ncol=3)
 #' plotChr(cutSites = my_cuts, genome = my_genome)
 #'
-#' }
-#' @author Benjamin Mayne
 #' @export
-#' @importFrom  S4Vectors Rle
-#' @import GenomicRanges
-#' @import GenomeInfoDb
-#' @importFrom IRanges IRanges
-#' @importFrom ggbio autoplot circle ggbio layout_karyogram autoplot
-#' @import ggplot2 
+
 
 plotChr <- function(cutSites, genome){
 

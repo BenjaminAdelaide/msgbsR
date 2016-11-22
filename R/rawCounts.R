@@ -6,18 +6,19 @@
 #' @param threads The total number of usable threads to be used. Default is 1.
 #' @usage rawCounts(bamFilepath, threads = 1)
 #' @return Produces a data frame where the rows correspond to cut sites and columns are the samples. Cut sites are given a unique ID (chromosome:strand:position).
-#' @examples
-#' \dontrun{
-#' datCounts <- rawCounts(bamFilepath, threads = 1)
-#' }
-#' @author Benjamin Mayne, Sam Buckberry
-#' @export
 #' @importFrom easyRNASeq validate BamFileList
 #' @import Rsamtools
 #' @import GenomicFeatures
 #' @import GenomicRanges
 #' @import plyr
 #' @import parallel
+#' @author Benjamin Mayne, Sam Buckberry
+#' @examples
+#'my_path <- system.file("extdata", "Control_1.bam", package = 'msgbsR')
+#'my_path <- gsub('Control_1.bam', '', my_path)
+#'datCounts <- rawCounts(bamFilepath = my_path, threads = 1)
+#' @export
+
 
 # Function to make the raw count matrix
 rawCounts <- function(bamFilepath, threads = 1){

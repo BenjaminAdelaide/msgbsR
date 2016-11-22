@@ -5,10 +5,17 @@
 #' @param gff The path to the location of a gff file.
 #' @param positions A matirx where the first column is the chromosome ID, the second column is the strand (1 or 2) and the third column is the position.
 #' @param strand.specific If TRUE the function will return the closest feature on the same strand, otherwise it'll return the closest feature on either strand. Default is TRUE.
+#' @return The closest biological feature annotated in a gff3 file.
 #' @author Benjamin Mayne
-#' @export
 #' @importFrom utils read.table
 #' @import plyr
+#' @examples
+#' data <- system.file("extdata", "exampleSites.Rdata", package = 'msgbsR')
+#' load(data)
+#' mygff <- system.file("extdata", "chr20.gff3", package = 'msgbsR')
+#' features <- closestFeat(gff = mygff, positions = z[1:100,],
+#'                         strand.specific = FALSE)
+#' @export
 
 
 closestFeat <- function(gff, positions, strand.specific = TRUE){

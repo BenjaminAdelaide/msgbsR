@@ -6,8 +6,9 @@
 #' @param condition1 A character vector containing a certain condition of the samples.
 #' @param condition2 A character vector containing another certain condition of the samples. Default is NULL.
 #' @return Produces a plot showing the total number reads vs total number of cut site per sample.
+#' @importFrom ggplot2 qplot
+#' @author Benjamin Mayne
 #' @examples
-#' \dontrun{
 #' # Generate a random matrix
 #' set.seed(1)
 #' x <- data.frame(matrix(sample(0:100, size = 10000*10, replace = TRUE), nrow = 10000, ncol = 10))
@@ -15,10 +16,8 @@
 #' z <- c(rep('C', 3), rep('D', 2), rep('E', 2), rep('F', 3))
 #'
 #' plotCounts(x,y,z)
-#' }
-#' @author Benjamin Mayne
 #' @export
-#' @importFrom ggplot2 qplot
+
 
 
 plotCounts <- function(countMatrix, condition1, condition2 = NULL){

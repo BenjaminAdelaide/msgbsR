@@ -9,9 +9,23 @@
 #' @param seq The desired sequence that the enzyme should have cut.
 #' @usage checkCuts(cutSites, cutIDs, fastaPath, BSgenome, seq)
 #' @author Benjamin Mayne
-#' @export
 #' @importFrom R.utils gunzip gzip
 #' @importFrom GenomicRanges makeGRangesFromDataFrame
+#' @examples
+#' data <- system.file("extdata", "datCounts.Rdata", package = 'msgbsR')
+#' load(data)
+#' x <- data.frame(row.names(datCounts))
+#' x <- data.frame(t(data.frame(strsplit(x=as.character(x[,1]), split=':'))))
+#' x[,2] <- x[,3]
+#' x <- as.matrix(x)
+#' row.names(x) <- NULL
+#' x[,3] <- as.numeric(x[,3]) +2
+#' x[,2] <- as.numeric(x[,2]) -1
+#' x <- as.matrix(x)
+#' chr20 <- system.file("extdata", "chr20.fa.gz", package = 'msgbsR')
+#' correctCuts <- checkCuts(cutSites = x, cutIDs = row.names(datCounts),
+#'                  fastaPath = chr20, seq = 'CCGG')
+#' @export
 
 
 checkCuts <- function(cutSites, cutIDs, fastaPath = NULL, BSgenome = NULL, seq){
