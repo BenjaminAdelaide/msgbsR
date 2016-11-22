@@ -30,15 +30,15 @@ Here we present msgbsR, an R package for data analysis of MS-GBS experiments. Re
 
 \section{Reading data into R}
 
-The analysis with the msgbsR pipeline begins with a directory which contains sorted and indexed BAM file(s). msgbsR contains an example data set containing 6 samples from a MS-GBS experiment using the restriction enzyme MspI. In this example the 6 samples are from the human placenta and have be truncated for chromosome 22.
+The analysis with the msgbsR pipeline begins with a directory which contains sorted and indexed BAM file(s). msgbsR contains an example data set containing 6 samples from a MS-GBS experiment using the restriction enzyme MspI. In this example the 6 samples are from the prostate of a rat and have be truncated for chromosome 20. 3 of the samples were fed a control diet and the other 3 were fed an experimental high fat diet.
 
 To read in the data directly into the R environment can be done using the rawCounts() function, which requires the directory path to where the sorted and indexed files are located and the desired number of threads to be run (Default = 1).
 
 <<load the example data>>=
 library(msgbsR)
 
-my_path <- system.file("extdata", "T1.bam", package = 'msgbsR')
-my_path <- gsub('T1.bam', '', my_path)
+my_path <- system.file("extdata", "Control_1.bam", package = 'msgbsR')
+my_path <- gsub('Control_1.bam', '', my_path)
 
 datCounts <- rawCounts(bamFilepath = my_path, threads = 1)
 @
@@ -65,21 +65,20 @@ x <- as.matrix(x)
 
 The object x is a matrix that contains the chromosome ID, the start and end position of the MspI sequence length around the cut sites. These cut sites can now be checked if the sequence matches the MspI sequence.
 
-msgbsR offer two approaches to checking the cut sites. The first approach is to use a BSgenome which can be obtained from Bioconductor. In this example, BSgenome.Hsapiens.UCSC.hg38 will be used.
+msgbsR offer two approaches to checking the cut sites. The first approach is to use a BSgenome which can be obtained from Bioconductor. In this example, BSgenome.Rnorvegicus.UCSC.rn6 will be used.
 
 <<run checkCuts with BSgenome>>=
-library(BSgenome.Hsapiens.UCSC.hg38)
-
+library(BSgenome.Rnorvegicus.UCSC.rn6)
 correctCuts <- checkCuts(cutSites = x, cutIDs = row.names(datCounts),
-                          BSgenome = Hsapiens, seq = 'CCGG')
+                         BSgenome = Rnorvegicus, seq = 'CCGG')
 @
 
-If a BSgenome is unavailable, another option to checking the cut sites is to use a fasta file. msgbsR comes with the fasta file for chromosome 22 from UCSC hg38. To use the checkCuts function with a fasta file simply leave the BSgenome input as blank (NULL) and input the path to the fasta file location. An example of this is shown below.
+If a BSgenome is unavailable, another option to checking the cut sites is to use a fasta file. msgbsR comes with the fasta file for chromosome 20 from UCSC rn6. To use the checkCuts function with a fasta file simply leave the BSgenome input as blank (NULL) and input the path to the fasta file location. An example of this is shown below.
 
 <<run checkCuts>>=
-chr22 <- system.file("extdata", "chr22.fa.gz", package = 'msgbsR')
+chr20 <- system.file("extdata", "chr20.fa.gz", package = 'msgbsR')
 correctCuts <- checkCuts(cutSites = x, cutIDs = row.names(datCounts),
-                         fastaPath = chr22, seq = 'CCGG')
+                         fastaPath = chr20, seq = 'CCGG')
 @
 
 The correctCuts data object now contains the correct cut site locations of MspI that were generated from this experiment.
@@ -97,7 +96,7 @@ Before any further downstream analyses with the table of read counts, the user m
 
 To visualize the total number of read counts against the total number of cut sites produced per sample:
 <<plot counts per cut sites >>=
-y <- data.frame(c(rep('First Trimester', 3), rep('Term', 3)))
+y <- data.frame(c(rep('Control', 3), rep('Fat Diet', 3)))
 colnames(y) <- 'Group'
 plotCounts(countMatrix = datCounts, condition1 = y$Group)
 @
@@ -120,17 +119,17 @@ plotCounts(countMatrix = datCounts, condition1 = y$Group)
 
 \section{Differential methylation analysis}
 
-msgbsR utilizes edgeR in order to determine which cut sites are differentially methylated between groups. Since MS-GBS experiments can have multiple groups or conditions msgbsR offers a wrapper function of edgeR (Zhou et al., 2014) tools to automate differential methylation analysis.
+msgbsR utilizes edgeR in order to determine which cut sites are differentially methylated between groups. Since MS-GBS experiments can have multiple groups or conditions msgbsR offers a wrapper function of edgeR (Zhou et al., 2014) tools to automate differential methylation analyses.
 
 To determine which cut sites are differentiallly methylated between groups:
 <<differential methylation>>=
 top <- diffMeth(countMatrix = datCounts, pd = y, cateogory = 'Group',
-                condition1 = 'First Trimester', condition2 = 'Term',
+                condition1 = 'Control', condition2 = 'Fat Diet',
                 block = NULL,
-                cpmThreshold = 1, thresholdSamples = 2)
+                cpmThreshold = 1, thresholdSamples = 1)
 @
 
-The top object now contains a data frame of the cut sites that had a CPM > 1 in at least 2 samples and which cut sites are differentially methylated between the two groups.
+The top object now contains a data frame of the cut sites that had a CPM > 1 in at least 1 sample and which cut sites are differentially methylated between the two groups.
 
 \section{Visualization of cut site locations}
 
@@ -138,12 +137,12 @@ The msgbsR package contains 2 functions to allow visualization of the location o
 
 Firstly, define the length of the chromosome.
 <<chr22 length>>=
-chr22 <- matrix(c('chr22', '50818468'), nrow = 1, ncol = 2)
+chr20 <- matrix(c('chr20', '56205956'), nrow = 1, ncol = 2)
 @
 
 Extract the top 100 most differentially methylated cut sites.
 <<top sites>>=
-z <- top$cut_site[1:100]
+z <- top$cut_site[which(top$PValue < 0.05)]
 z <- data.frame(t(data.frame(strsplit(x=as.character(z), split=':'))))
 z <- as.matrix(z)
 row.names(z) <- NULL
@@ -151,26 +150,26 @@ row.names(z) <- NULL
 
 To generate a circos plot:
 <<circos plot>>=
-plotCircos(cutSites = z[,c(1,3,3)], genome = chr22,
+plotCircos(cutSites = z[,c(1,3,3)], genome = chr20,
            cutSite.colour = 'red', genome.colour = 'blue')
 
 @
 
 To generate a karogram plot:
 <<karyogram plot>>=
-plotChr(cutSites = z[,c(1,3,3)], genome = chr22)
+plotChr(cutSites = z[,c(1,3,3)], genome = chr20)
 @
 
 \setkeys{Gin}{width=1\linewidth}
 \begin{figure}
 \begin{center}
 <<label=fig2, fig=TRUE, echo=FALSE, eps=FALSE, >>=
-plotCircos(cutSites = z[,c(1,3,3)], genome = chr22,
+plotCircos(cutSites = z[,c(1,3,3)], genome = chr20,
            cutSite.colour = 'red', genome.colour = 'blue')
 
 @
 \end{center}
-\caption{A circos plot of chromosome 22 representing the top 100 differentially methylated cut sites.}
+\caption{A circos plot of chromosome 20 representing cut sites defined by the user.}
 \label{fig:fig2}
 \end{figure}
 
@@ -181,10 +180,10 @@ plotCircos(cutSites = z[,c(1,3,3)], genome = chr22,
 \begin{figure}
 \begin{center}
 <<label=fig3, fig=TRUE, echo=FALSE, eps=FALSE, >>=
-plotChr(cutSites = z[,c(1,3,3)], genome = chr22)
+plotChr(cutSites = z[,c(1,3,3)], genome = chr20)
 @
 \end{center}
-\caption{A karyogram of chromosome 22 showing the location of differentially methylated cut sites.}
+\caption{A karyogram of chromosome 20 showing cut sites defined by the user.}
 \label{fig:fig3}
 \end{figure}
 
@@ -196,7 +195,7 @@ The msgbsR package can also work with gff3 files to annotate interesting positio
 
 To annotate interesting cut sites:
 <<annotation>>=
-mygff <- system.file("extdata", "chr22.gff3", package = 'msgbsR')
+mygff <- system.file("extdata", "chr20.gff3", package = 'msgbsR')
 z[ ,1] <- gsub('chr', '', z[,1])
 features <- closestFeat(gff = mygff, positions = z[1:100,],
                         strand.specific = FALSE)
