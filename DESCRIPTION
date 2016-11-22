@@ -1,7 +1,7 @@
 Package: msgbsR
 Type: Package
 Title: msgbsR: methylation sensitive genotyping by sequencing (MS-GBS) R functions
-Version: 0.99.15
+Version: 0.99.16
 Date: 2016-11-11
 Author: Benjamin Mayne
 Maintainer: Benjamin Mayne <benjamin.mayne@adelaide.edu.au>
@@ -12,5 +12,5 @@ biocViews: DifferentialMethylation, DataImport, Epigenetics, MethylSeq
 Description: Pipeline for the anaysis of a MS-GBS experiment.
 License: GPL-2
 LazyLoad: yes
-Collate: 'rawCounts.R' 'checkCuts.R' 'plotCounts.R' 'diffMeth.R' 'plotCircos.R' 'plotChr.R' 'closestFeat.R'
+Collate: 'rawCounts.R' 'checkCuts.R' 'plotCounts.R' 'diffMeth.R' 'plotCircos.R' 'closestFeat.R'
 RoxygenNote: 5.0.1
