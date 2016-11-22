@@ -18,9 +18,9 @@ Produces a data frame where the rows correspond to cut sites and columns are the
 Imports the raw read counts from sorted and indexed bam file(s)
 }
 \examples{
-\dontrun{
-datCounts <- rawCounts(bamFilepath, threads = 1)
-}
+my_path <- system.file("extdata", "Control_1.bam", package = 'msgbsR')
+my_path <- gsub('Control_1.bam', '', my_path)
+datCounts <- rawCounts(bamFilepath = my_path, threads = 1)
 }
 \author{
 Benjamin Mayne, Sam Buckberry

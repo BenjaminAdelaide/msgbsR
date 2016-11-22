@@ -31,8 +31,6 @@ A data frame containing which cut sites are differenitally cut.
 Determines differential methylated sites from a matrix of read counts
 }
 \examples{
-\dontrun{
-
 # Make a read counts data frame
 set.seed(1)
 x <- data.frame(matrix(sample(0:100, size = 10000*10, replace = TRUE), nrow = 10000, ncol = 10))
@@ -45,7 +43,6 @@ y$Block <- rep(c(rep('C',1), rep('D', 1)), 5)
 z <- diffMeth(countMatrix = x, pd = y, cateogory = 'group', condition1 = 'A',
               condition2 = 'B', block = 'Block', cpmThreshold = 1, thresholdSamples =3)
 
-}
 }
 \author{
 Benjamin Mayne

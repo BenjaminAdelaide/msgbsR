@@ -13,8 +13,18 @@ closestFeat(gff, positions, strand.specific = TRUE)
 
 \item{strand.specific}{If TRUE the function will return the closest feature on the same strand, otherwise it'll return the closest feature on either strand. Default is TRUE.}
 }
+\value{
+The closest biological feature annotated in a gff3 file.
+}
 \description{
 Determines the closest feature of cut site locations
+}
+\examples{
+data <- system.file("extdata", "exampleSites.Rdata", package = 'msgbsR')
+load(data)
+mygff <- system.file("extdata", "chr20.gff3", package = 'msgbsR')
+features <- closestFeat(gff = mygff, positions = z[1:100,],
+                        strand.specific = FALSE)
 }
 \author{
 Benjamin Mayne

@@ -20,6 +20,21 @@ checkCuts(cutSites, cutIDs, fastaPath, BSgenome, seq)
 \description{
 Determines the sequence around a cut site using a fasta file
 }
+\examples{
+data <- system.file("extdata", "datCounts.Rdata", package = 'msgbsR')
+load(data)
+x <- data.frame(row.names(datCounts))
+x <- data.frame(t(data.frame(strsplit(x=as.character(x[,1]), split=':'))))
+x[,2] <- x[,3]
+x <- as.matrix(x)
+row.names(x) <- NULL
+x[,3] <- as.numeric(x[,3]) +2
+x[,2] <- as.numeric(x[,2]) -1
+x <- as.matrix(x)
+chr20 <- system.file("extdata", "chr20.fa.gz", package = 'msgbsR')
+correctCuts <- checkCuts(cutSites = x, cutIDs = row.names(datCounts),
+                 fastaPath = chr20, seq = 'CCGG')
+}
 \author{
 Benjamin Mayne
 }

@@ -11,11 +11,13 @@ plotChr(cutSites, genome)
 
 \item{genome}{A matrix with the lengths of the chromosomes. The first column is the chromosome ID and the second is the length of each chromosome.}
 }
+\value{
+An ideogram showing the locations of the cut sites.
+}
 \description{
 Plot a karogram representing the cut site locations
 }
 \examples{
-\dontrun{
 my_cuts <- matrix(c('chr1', 'chr2', 'chr3', 'chr4',
 '500', '1000', '750', '400',
 '500', '1000', '750', '400'), nrow=4, ncol=3)
@@ -23,7 +25,6 @@ my_genome <- matrix(c('chr1', 'chr2', 'chr3', 'chr4',
                    '1000', '2000','1500', '800'), nrow=4, ncol=3)
 plotChr(cutSites = my_cuts, genome = my_genome)
 
-}
 }
 \author{
 Benjamin Mayne
