@@ -1,7 +1,7 @@
 Package: msgbsR
 Type: Package
 Title: msgbsR: methylation sensitive genotyping by sequencing (MS-GBS) R functions
-Version: 0.99.0
+Version: 0.99.1
 Date: 2016-11-11
 Author: Benjamin Mayne
 Maintainer: Benjamin Mayne <benjamin.mayne@adelaide.edu.au>
