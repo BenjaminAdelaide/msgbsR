@@ -1,4 +1,3 @@
-%\VignetteEngine{knitr::knitr}
 
 \documentclass{article}
 
@@ -13,6 +12,7 @@
 % \VignetteIndexEntry{msgbsR_Example}
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 \title{msgbsR: an R package to analyse methylation sensitive genotyping by sequencing (MS-GBS) data}
 \author{Benjamin Mayne}
 \maketitle
@@ -102,7 +102,7 @@ This function generates a plot (Figure 1) where the x axis and y axis represents
 \setkeys{Gin}{width=1\linewidth}
 \begin{figure}
 \begin{center}
-<<label=fig1, echo=FALSE>>=
+<<label=fig1, fig=TRUE, echo=FALSE, eps=FALSE, >>=
 plotCounts(countMatrix = datCounts, condition1 = y$Group)
 @
 \end{center}
@@ -152,7 +152,7 @@ plotCircos(cutSites = my_cuts, genome = ratChr,
 \setkeys{Gin}{width=1\linewidth}
 \begin{figure}
 \begin{center}
-<<label=fig2, echo=FALSE>>=
+<<label=fig2, fig=TRUE, echo=FALSE, eps=FALSE, >>=
 plotCircos(cutSites = my_cuts, genome = ratChr,
            cutSite.colour = 'red', genome.colour = 'blue')
 
@@ -169,7 +169,7 @@ plotCircos(cutSites = my_cuts, genome = ratChr,
 The msgbsR package can also work with gff3 files to annotate interesting positions such as those that might be differentially methylated. Annotation can be done using the closestFeat() function. To use closestFeat() the user needs to input the path to the gff3 file, the cut sites in the form of a matrix and whether or not the user wants to look at strand specific features.
 
 To annotate interesting cut sites:
-<<annotate cuts>>=
+<<annotation>>=
 mygff <- system.file("extdata", "chr20.gff3", package = 'msgbsR')
 features <- closestFeat(gff = mygff, cutSites = my_cuts)
 features[1:5,1:5]
