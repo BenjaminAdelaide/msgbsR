@@ -62,7 +62,8 @@ rawCounts <- function(bamFilepath, threads = 1){
     colnames(out)[4] <- "count"
 
     # Create a unique locus identifier
-    out$id <- paste(out$rname, out$strand, out$readStart, sep=":")
+    out$id <- paste(out$rname, out$readStart, sep=":")
+    out$id <- paste(out$id, out$readStart, sep="-")
 
     # Add the sample name
     out$sample <- basename(bamFilepath)
@@ -73,12 +74,9 @@ rawCounts <- function(bamFilepath, threads = 1){
 
   #============================================================================================
   # Firstly check if the threads input vaue is numeric
-  threadsClass <- class(threads)[1]
-  threadsClass <- ifelse(threadsClass == 'numeric', yes=TRUE, no=FALSE)
-  if(threadsClass == 'FALSE'){
-    stop("Please input a numeric value for the total number of threads")
+  if(!is(threads, "numeric")){
+    stop('The threads must be a numeric value')
   }
-
 
   # Get a list of all the bam files
   bamFiles <- list.files(path=bamFilepath,
@@ -129,9 +127,6 @@ rawCounts <- function(bamFilepath, threads = 1){
   for(i in 1:length(bams)){
     # Subset the sample of interest
     sampleDat <- dat[dat$sample == bams[i], ]
-
-    # Test for unique locus ids and return error if false
-    stopifnot(anyDuplicated(sampleDat$id) == 0)
 
     #First, get the location of the matching ids for the sample in the matrix
     index <- match(x=sampleDat$id, table=row.names(countMatrix))

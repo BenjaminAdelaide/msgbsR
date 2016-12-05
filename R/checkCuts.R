@@ -4,117 +4,83 @@
 #'
 #' @param cutSites A matrix where the first column is the chromosome ID, the second column is the starting position and the third column is the ending position of the cut site sequence.
 #' @param cutIDs A character vector containing unique IDs for each cut site.
-#' @param fastaPath The path to fasta file to be checked against, if not using a BSgenome.
-#' @param BSgenome The name of the species BSgenome to be used, if not using a fasta file.
+#' @param genome The path to fasta file or a BSgenome object to check for genomic sequences.
+#' @param fasta TRUE if a fasta file has been supplied. Default = FALSE
 #' @param seq The desired sequence that the enzyme should have cut.
-#' @usage checkCuts(cutSites, cutIDs, fastaPath, BSgenome, seq)
+#' @usage checkCuts(cutSites, cutIDs, genome, fasta = FALSE, seq)
 #' @author Benjamin Mayne
 #' @return cut sites that match the input sequence
 #' @importFrom R.utils gunzip gzip
 #' @importFrom GenomicRanges makeGRangesFromDataFrame
 #' @examples
-#' data <- system.file("extdata", "datCounts.Rdata", package = 'msgbsR')
-#' load(data)
-#' x <- data.frame(row.names(datCounts))
-#' x <- data.frame(t(data.frame(strsplit(x=as.character(x[,1]), split=':'))))
-#' x[,2] <- x[,3]
-#' x <- as.matrix(x)
-#' row.names(x) <- NULL
-#' x[,3] <- as.numeric(x[,3]) +2
-#' x[,2] <- as.numeric(x[,2]) -1
-#' x <- as.matrix(x)
-#' chr20 <- system.file("extdata", "chr20.fa.gz", package = 'msgbsR')
-#' correctCuts <- checkCuts(cutSites = x, cutIDs = row.names(datCounts),
-#'                  fastaPath = chr20, seq = 'CCGG')
+#' library(GenomicRanges)
+#' data(datCounts)
+#' cutSites <- GRanges(rownames(datCounts))
+#' cutSites@ranges@start <- as.integer(cutSites@ranges@start -1)
+#' cutSites@ranges@width <- as.integer(cutSites@ranges@width + 3)
+#' chr20 <- system.file("extdata", "chr20.fa.gz", package="msgbsR")
+#' correctCuts <- checkCuts(cutSites = cutSites, cutIDs = row.names(datCounts),
+#'                          genome = chr20, fasta = TRUE, seq = 'CCGG')
 #' @export
 
 
-checkCuts <- function(cutSites, cutIDs, fastaPath = NULL, BSgenome = NULL, seq){
+checkCuts <- function(cutSites, cutIDs, genome, fasta = FALSE, seq){
 
   # Unit tests
-  ## Check if the cutSites are a matrix
-  cutSitesClass <- class(cutSites)[1]
-  cutSitesClass <- ifelse(cutSitesClass == 'matrix', yes=TRUE, no=FALSE)
-  if(cutSitesClass == 'FALSE'){
-    stop('cutSites must be a matrix')
+  ## Check if the cutSites is GRanges object
+  if(!is(cutSites, "GRanges")){
+    stop('The cutSites must be a GRanges object')
   }
 
   ## Check if the cutIDs are a character class
-  cutIDsClass <- class(cutIDs)[1]
-  cutIDsClass <- ifelse(cutIDsClass == 'character', yes=TRUE, no=FALSE)
-  if(cutIDsClass == 'FALSE'){
+  if(!is(cutIDs, "character")){
     stop('The cutIDs must be of character class')
   }
 
-  if(is.null(fastaPath) == FALSE){
+  ## If a fasta file has been supplied check
+
+  if(fasta == TRUE){
   ## Check if the fasta file is compressed or not
     extenstion <- function (x)
   {
     pos <- regexpr("\\.([[:alnum:]]+)$", x)
     ifelse(pos > -1L, substring(x, pos + 1L), "")
   }
-  fastaExt <- ifelse(extenstion(fastaPath) == 'gz', yes=TRUE, no=FALSE)
+  fastaExt <- ifelse(extenstion(genome) == 'gz', yes=TRUE, no=FALSE)
   if(fastaExt == 'TRUE'){
     print('Uncompressing fasta file')
-    gunzip(fastaPath)
-    fastaPath <- gsub('.gz', '', fastaPath)
+    gunzip(genome)
+    genome <- gsub('.gz', '', genome)
   }
   }
 
-  if(is.null(BSgenome) == FALSE){
-  ## Check if supplied BSgenome object is actually a BSgenome
-  output = class(BSgenome) == 'BSgenome'
-  if(output == FALSE){
-    stop('Supplied input is not a BSgenome')
-  }
+  if(fasta == FALSE){
+  ## Check if supplied genome object is actually a BSgenome
+    if(!is(genome, "BSgenome")){
+      stop('genome must be a BSgenome if fasta = FALSE')
+    }
   }
 
   ## Check if the seq is a character class
-  seqClass <- class(seq)[1]
-  seqClass <- ifelse(seqClass == 'character', yes=TRUE, no=FALSE)
-  if(seqClass == 'FALSE'){
+  if(!is(seq, "character")){
     stop('seq must be of character class')
   }
 
 #=================================================================================
 
-  # Firstly turn the cutSites into a data frame and then into a GRanges object
-  cutSites <- data.frame(cutSites)
-  colnames(cutSites) <- c('seqname', 'start', 'end')
-
-  # Check if any numbers have been short to e+etc
-  es <- grep('e', cutSites[,3])
-
-  if(length(es) > 0){
-    cutSites[es,3] <- as.character(lapply(1:length(es), function(x) sprintf("%.f", as.numeric(cutSites[es[x] ,3]))))
-  }
-  ## Repeat it for the start column
-  es <- grep('e', cutSites[,2])
-
-  if(length(es) > 0){
-    cutSites[es,2] <- as.character(lapply(1:length(es), function(x) sprintf("%.f", as.numeric(cutSites[es[x] ,2]))))
-  }
-
-  # make sure the start and end are numeric
-  cutSites$start <- as.numeric(as.character(cutSites$start))
-  cutSites$end <- as.numeric(as.character(cutSites$end))
-
-  # Turn into a GRanges object
-  cuts.gr <- makeGRangesFromDataFrame(cutSites)
-
   # Use either a fasta file or BSgenome
-  if(is.null(fastaPath) == FALSE){
+  if(fasta == TRUE){
   # Scan the fasta file for the sequences
-  sequences <- data.frame(scanFa(fastaPath, cuts.gr))
+  sequences <- data.frame(scanFa(genome, cutSites))
 
   if(fastaExt == 'TRUE'){
     print('Compressing fasta file')
-    gzip(fastaPath)
+    gzip(genome)
   }
 
 
-  } else if(is.null(BSgenome) == FALSE) {
-  sequences <- data.frame(getSeq(BSgenome, cuts.gr))
+  } else if(fasta == FALSE) {
+  sequences <- data.frame(getSeq(genome, cutSites))
   }
 
   # Add the cutIDs into the data frame
@@ -126,4 +92,7 @@ checkCuts <- function(cutSites, cutIDs, fastaPath = NULL, BSgenome = NULL, seq){
   # Return the correct sequences
   return(sequences[,2])
 
-  }
+}
+
+
+

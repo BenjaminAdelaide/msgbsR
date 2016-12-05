@@ -6,11 +6,11 @@
 #' @param condition1 A character vector containing a certain condition of the samples.
 #' @param condition2 A character vector containing another certain condition of the samples. Default is NULL.
 #' @return Produces a plot showing the total number reads vs total number of cut site per sample.
+#' @usage plotCounts(countMatrix, condition1, condition2 = NULL)
 #' @import ggplot2
 #' @author Benjamin Mayne
 #' @examples
-#' data <- system.file("extdata", "datCounts_filtered.Rdata", package = 'msgbsR')
-#' load(data)
+#' data(datCounts_filtered)
 #' y <- data.frame(c(rep('Control', 3), rep('Fat Diet', 3)))
 #' colnames(y) <- 'Group'
 #' plotCounts(countMatrix = datCounts, condition1 = y$Group)

@@ -10,6 +10,8 @@
 #' @param block The column name of pd if differential methylation is to be tested with a blocking factor. Default is NULL.
 #' @param cpmThreshold Counts per million threshold of read counts to be filtered out of the analysis.
 #' @param thresholdSamples Minimum number of samples to contain the counts per million threshold.
+#' @usage diffMeth(countMatrix, pd, cateogory, condition1, condition2,
+#'                  block = NULL, cpmThreshold, thresholdSamples)
 #' @return A data frame containing which cut sites are differenitally cut.
 #' @import edgeR
 #' @importFrom stats model.matrix relevel
