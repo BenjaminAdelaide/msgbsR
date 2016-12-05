@@ -4,14 +4,12 @@
 \alias{closestFeat}
 \title{closestFeat}
 \usage{
-closestFeat(gff, positions, strand.specific = TRUE)
+closestFeat(gff, cutSites)
 }
 \arguments{
 \item{gff}{The path to the location of a gff file.}
 
-\item{positions}{A matirx where the first column is the chromosome ID, the second column is the strand (1 or 2) and the third column is the position.}
-
-\item{strand.specific}{If TRUE the function will return the closest feature on the same strand, otherwise it'll return the closest feature on either strand. Default is TRUE.}
+\item{cutSites}{A GRanges object containing the location of the cut sites.}
 }
 \value{
 The closest biological feature annotated in a gff3 file.
@@ -20,11 +18,9 @@ The closest biological feature annotated in a gff3 file.
 Determines the closest feature of cut site locations
 }
 \examples{
-data <- system.file("extdata", "exampleSites.Rdata", package = 'msgbsR')
-load(data)
+data(cuts)
 mygff <- system.file("extdata", "chr20.gff3", package = 'msgbsR')
-features <- closestFeat(gff = mygff, positions = z[1:100,],
-                        strand.specific = FALSE)
+features <- closestFeat(gff = mygff, cutSites = cuts)
 }
 \author{
 Benjamin Mayne

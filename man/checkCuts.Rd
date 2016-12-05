@@ -4,16 +4,16 @@
 \alias{checkCuts}
 \title{checkCuts}
 \usage{
-checkCuts(cutSites, cutIDs, fastaPath, BSgenome, seq)
+checkCuts(cutSites, cutIDs, genome, fasta = FALSE, seq)
 }
 \arguments{
 \item{cutSites}{A matrix where the first column is the chromosome ID, the second column is the starting position and the third column is the ending position of the cut site sequence.}
 
 \item{cutIDs}{A character vector containing unique IDs for each cut site.}
 
-\item{fastaPath}{The path to fasta file to be checked against, if not using a BSgenome.}
+\item{genome}{The path to fasta file or a BSgenome object to check for genomic sequences.}
 
-\item{BSgenome}{The name of the species BSgenome to be used, if not using a fasta file.}
+\item{fasta}{TRUE if a fasta file has been supplied. Default = FALSE}
 
 \item{seq}{The desired sequence that the enzyme should have cut.}
 }
@@ -24,19 +24,14 @@ cut sites that match the input sequence
 Determines the sequence around a cut site using a fasta file
 }
 \examples{
-data <- system.file("extdata", "datCounts.Rdata", package = 'msgbsR')
-load(data)
-x <- data.frame(row.names(datCounts))
-x <- data.frame(t(data.frame(strsplit(x=as.character(x[,1]), split=':'))))
-x[,2] <- x[,3]
-x <- as.matrix(x)
-row.names(x) <- NULL
-x[,3] <- as.numeric(x[,3]) +2
-x[,2] <- as.numeric(x[,2]) -1
-x <- as.matrix(x)
-chr20 <- system.file("extdata", "chr20.fa.gz", package = 'msgbsR')
-correctCuts <- checkCuts(cutSites = x, cutIDs = row.names(datCounts),
-                 fastaPath = chr20, seq = 'CCGG')
+library(GenomicRanges)
+data(datCounts)
+cutSites <- GRanges(rownames(datCounts))
+cutSites@ranges@start <- as.integer(cutSites@ranges@start -1)
+cutSites@ranges@width <- as.integer(cutSites@ranges@width + 3)
+chr20 <- system.file("extdata", "chr20.fa.gz", package="msgbsR")
+correctCuts <- checkCuts(cutSites = cutSites, cutIDs = row.names(datCounts),
+                         genome = chr20, fasta = TRUE, seq = 'CCGG')
 }
 \author{
 Benjamin Mayne

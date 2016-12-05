@@ -20,8 +20,7 @@ Produces a plot showing the total number reads vs total number of cut site per s
 Plot the total number of reads vs total number of cut sites per sample
 }
 \examples{
-data <- system.file("extdata", "datCounts_filtered.Rdata", package = 'msgbsR')
-load(data)
+data(datCounts_filtered)
 y <- data.frame(c(rep('Control', 3), rep('Fat Diet', 3)))
 colnames(y) <- 'Group'
 plotCounts(countMatrix = datCounts, condition1 = y$Group)

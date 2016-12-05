@@ -9,7 +9,7 @@ plotCircos(cutSites, genome, cutSite.colour, genome.colour)
 \arguments{
 \item{cutSites}{A matrix consisting of three columns, where the first column is the chromosome ID, the second and third column being the start and end position of the cut site respectively.}
 
-\item{genome}{A matrix with the lengths of the chromosomes. The first column is the chromosome ID and the second is the length of each chromosome.}
+\item{genome}{An integer with the lengths of the chromosomes.}
 
 \item{cutSite.colour}{The colour of the cut sites.}
 
@@ -22,14 +22,10 @@ A circos plot showing the locations of the cut sites.
 Plot a circos representing the cut site locations
 }
 \examples{
-\dontrun{
- my_cuts <- matrix(c('chr1', 'chr2', 'chr3', 'chr4',
-'500', '1000', '750', '400',
-'500', '1000', '750', '400'), nrow=4, ncol=3)
-my_genome <- matrix(c('chr1', 'chr2', 'chr3', 'chr4',
-                   '1000', '2000','1500', '800'), nrow=4, ncol=2)
-plotCircos(cutSites = my_cuts, genome = my_genome, cutSite.colour = 'red', genome.colour = 'green')
-}
+data(cuts)
+data(ratChr)
+plotCircos(cutSites = cuts, genome = ratChr,
+           cutSite.colour = 'red', genome.colour = 'blue')
 }
 \author{
 Benjamin Mayne

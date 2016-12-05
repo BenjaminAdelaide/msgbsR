@@ -4,8 +4,8 @@
 \alias{diffMeth}
 \title{diffMeth}
 \usage{
-diffMeth(countMatrix, pd, cateogory, condition1, condition2, block = NULL,
-  cpmThreshold, thresholdSamples)
+diffMeth(countMatrix, pd, cateogory, condition1, condition2,
+                 block = NULL, cpmThreshold, thresholdSamples)
 }
 \arguments{
 \item{countMatrix}{A data frame containing read counts. Rows are cut sites and columns are samples.}
