@@ -4,16 +4,16 @@
 \alias{plotCircos}
 \title{plotCircos}
 \usage{
-plotCircos(cutSites, genome, cutSite.colour, genome.colour)
+plotCircos(cutSites, seqlengths, cutSite.colour, seqlengths.colour)
 }
 \arguments{
-\item{cutSites}{A matrix consisting of three columns, where the first column is the chromosome ID, the second and third column being the start and end position of the cut site respectively.}
+\item{cutSites}{A GRanges object containing the locations of the cut sites.}
 
-\item{genome}{An integer with the lengths of the chromosomes.}
+\item{seqlengths}{An integer with the lengths of the chromosomes.}
 
 \item{cutSite.colour}{The colour of the cut sites.}
 
-\item{genome.colour}{The colour of the chromosomes}
+\item{seqlengths.colour}{The colour of the chromosomes}
 }
 \value{
 A circos plot showing the locations of the cut sites.
@@ -24,8 +24,8 @@ Plot a circos representing the cut site locations
 \examples{
 data(cuts)
 data(ratChr)
-plotCircos(cutSites = cuts, genome = ratChr,
-           cutSite.colour = 'red', genome.colour = 'blue')
+plotCircos(cutSites = cuts, seqlengths = ratChr,
+           cutSite.colour = "red", seqlengths.colour = "blue")
 }
 \author{
 Benjamin Mayne

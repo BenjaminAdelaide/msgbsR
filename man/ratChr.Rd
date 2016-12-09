@@ -3,16 +3,16 @@
 \docType{data}
 \name{ratChr}
 \alias{ratChr}
-\title{A integer with the length of chr20 in Rat}
-\format{A integer of length 1}
+\title{The length of chromsome 20 in Rats (rn6 UCSC)}
+\format{An integer of length 1}
 \usage{
 data(ratChr)
 }
 \value{
-A integer of length 1
+An integer of length 1
 }
 \description{
-A data set containing the following data:
+An integer with the length of base pairs of chr20 in Rat (rn6 UCSC).
 }
 \details{
 \itemize{

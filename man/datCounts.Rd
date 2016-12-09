@@ -3,20 +3,20 @@
 \docType{data}
 \name{datCounts}
 \alias{datCounts}
-\title{Table of read counts}
-\format{A 16977x6 matrix}
+\title{A table of read counts from a MS-GBS experiment}
+\format{A 16977x6 integer matrix}
 \usage{
 data(datCounts)
 }
 \value{
-A 16977x6 matrix
+A 16977x6 integer matrix
 }
 \description{
-A data set containing the following data:
+An integer matrix containing read counts generated from a MS-GBS experiment using the restriction enzyme MspI, focusing on chromosome 20 of Rat.
 }
 \details{
 \itemize{
-	\item datCounts a matrix with 16977 rows (Potential MspI cut sites) and six columns (samples)
+	\item datCounts a matrix with 16977 rows (Potential MspI cut sites on chromosome 20) and six columns (samples).
 }
 }
 \keyword{datasets}

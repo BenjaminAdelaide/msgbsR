@@ -7,31 +7,33 @@
 checkCuts(cutSites, cutIDs, genome, fasta = FALSE, seq)
 }
 \arguments{
-\item{cutSites}{A matrix where the first column is the chromosome ID, the second column is the starting position and the third column is the ending position of the cut site sequence.}
+\item{cutSites}{A GRanges object containing the locations of the cut sites to be checked for sequence match.}
 
 \item{cutIDs}{A character vector containing unique IDs for each cut site.}
 
-\item{genome}{The path to fasta file or a BSgenome object to check for genomic sequences.}
+\item{genome}{The path to a fasta file or a BSgenome object to check for genomic sequences.}
 
 \item{fasta}{TRUE if a fasta file has been supplied. Default = FALSE}
 
-\item{seq}{The desired sequence that the enzyme should have cut.}
+\item{seq}{The desired recognition sequence that the enzyme should have cut.}
 }
 \value{
-cut sites that match the input sequence
+cutIDs that match the desired recognition sequence (seq)
 }
 \description{
-Determines the sequence around a cut site using a fasta file
+Determines the sequence around a cut site using a fasta file or BSgenome
 }
 \examples{
 library(GenomicRanges)
+# Load the positions of possible MspI cut sites
 data(datCounts)
 cutSites <- GRanges(rownames(datCounts))
-cutSites@ranges@start <- as.integer(cutSites@ranges@start -1)
-cutSites@ranges@width <- as.integer(cutSites@ranges@width + 3)
+# Adjust positions to overlap the recognition sequence of MspI
+start(cutSites) <- start(cutSites) - 1
+end(cutSites) <- end(cutSites) + 2
 chr20 <- system.file("extdata", "chr20.fa.gz", package="msgbsR")
 correctCuts <- checkCuts(cutSites = cutSites, cutIDs = row.names(datCounts),
-                         genome = chr20, fasta = TRUE, seq = 'CCGG')
+                         genome = chr20, fasta = TRUE, seq = "CCGG")
 }
 \author{
 Benjamin Mayne

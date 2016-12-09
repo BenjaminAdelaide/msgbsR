@@ -12,14 +12,14 @@ closestFeat(gff, cutSites)
 \item{cutSites}{A GRanges object containing the location of the cut sites.}
 }
 \value{
-The closest biological feature annotated in a gff3 file.
+The closest biological feature annotated in a gff3 file to each cut site.
 }
 \description{
 Determines the closest feature of cut site locations
 }
 \examples{
 data(cuts)
-mygff <- system.file("extdata", "chr20.gff3", package = 'msgbsR')
+mygff <- system.file("extdata", "chr20.gff3", package = "msgbsR")
 features <- closestFeat(gff = mygff, cutSites = cuts)
 }
 \author{

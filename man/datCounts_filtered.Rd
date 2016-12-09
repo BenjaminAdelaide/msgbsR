@@ -3,16 +3,16 @@
 \docType{data}
 \name{datCounts_filtered}
 \alias{datCounts_filtered}
-\title{Table of filtered read counts from a MSGBS experiment}
-\format{A 7178x6 matrix}
+\title{A table of read counts from a MS-GBS experiment after filtering incorrect cut sites}
+\format{A 7178x6 integer matrix}
 \usage{
 data(datCounts_filtered)
 }
 \value{
-A 7178x6 matrix
+A 7178x6 integer matrix
 }
 \description{
-A data set containing the following data:
+An integer matrix of read counts with correct locations of MspI cuts of chromosome 20 from Rat.
 }
 \details{
 \itemize{

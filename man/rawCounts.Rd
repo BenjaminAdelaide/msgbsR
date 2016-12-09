@@ -12,14 +12,13 @@ rawCounts(bamFilepath, threads = 1)
 \item{threads}{The total number of usable threads to be used. Default is 1.}
 }
 \value{
-Produces a data frame where the rows correspond to cut sites and columns are the samples. Cut sites are given a unique ID (chromosome:strand:position).
+Produces an integer matrix where the columns are samples and the rows are cut sites. The cut site IDs are in the format chr:position-position.
 }
 \description{
 Imports the raw read counts from sorted and indexed bam file(s)
 }
 \examples{
-my_path <- system.file("extdata", "Control_1.bam", package = 'msgbsR')
-my_path <- gsub('Control_1.bam', '', my_path)
+my_path <- system.file("extdata", "", package = "msgbsR")
 datCounts <- rawCounts(bamFilepath = my_path, threads = 1)
 }
 \author{

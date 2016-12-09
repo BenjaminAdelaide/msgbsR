@@ -8,7 +8,7 @@ diffMeth(countMatrix, pd, cateogory, condition1, condition2,
                  block = NULL, cpmThreshold, thresholdSamples)
 }
 \arguments{
-\item{countMatrix}{A data frame containing read counts. Rows are cut sites and columns are samples.}
+\item{countMatrix}{A matrix containing read counts. Rows are cut sites and columns are samples.}
 
 \item{pd}{A data frame containing any meta data of the samples within the countMatrix.}
 
@@ -35,12 +35,12 @@ Determines differential methylated sites from a matrix of read counts
 set.seed(1)
 x <- matrix(sample(0:100, size = 10000*10, replace = TRUE), nrow = 10000, ncol = 10)
 # Set the groups and blocking factor
-y <- data.frame(c(rep('A', 5), rep('B', 5)))
-colnames(y) <- 'group'
-y$Block <- rep(c(rep('C',1), rep('D', 1)), 5)
+y <- data.frame(c(rep("A", 5), rep("B", 5)))
+colnames(y) <- "group"
+y$Block <- rep(c(rep("C",1), rep("D", 1)), 5)
 
 # Determine differential cut sites
-z <- diffMeth(countMatrix = x, pd = y, cateogory = 'group', condition1 = 'A',
+z <- diffMeth(countMatrix = x, pd = y, cateogory = "group", condition1 = "A",
               condition2 = 'B', block = 'Block', cpmThreshold = 1, thresholdSamples =3)
 
 }

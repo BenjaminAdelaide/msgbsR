@@ -7,7 +7,7 @@
 plotCounts(countMatrix, condition1, condition2 = NULL)
 }
 \arguments{
-\item{countMatrix}{A data frame containing read counts per sample.}
+\item{countMatrix}{A matrix containing read counts per sample.}
 
 \item{condition1}{A character vector containing a certain condition of the samples.}
 
@@ -21,8 +21,8 @@ Plot the total number of reads vs total number of cut sites per sample
 }
 \examples{
 data(datCounts_filtered)
-y <- data.frame(c(rep('Control', 3), rep('Fat Diet', 3)))
-colnames(y) <- 'Group'
+y <- data.frame(c(rep("Control", 3), rep("Fat Diet", 3)))
+colnames(y) <- "Group"
 plotCounts(countMatrix = datCounts, condition1 = y$Group)
 }
 \author{
