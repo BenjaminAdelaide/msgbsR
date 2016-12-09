@@ -38,9 +38,7 @@ library(msgbsR)
 library(ggplot2)
 library(GenomicRanges)
 
-my_path <- system.file("extdata", "Control_1.bam", package = 'msgbsR')
-my_path <- gsub('Control_1.bam', '', my_path)
-
+my_path <- system.file("extdata", "", package = "msgbsR")
 datCounts <- rawCounts(bamFilepath = my_path, threads = 1)
 @
 
@@ -55,8 +53,8 @@ The first step is to extract the location of the cut sites from datCounts and ad
 <<extract cut sites>>=
 cutSites  <- GRanges(rownames(datCounts))
 
-cutSites@ranges@start <- as.integer(cutSites@ranges@start -1)
-cutSites@ranges@width <- as.integer(cutSites@ranges@width + 3)
+start(cutSites) <- start(cutSites) - 1
+end(cutSites) <- end(cutSites) + 2
 @
 
 The object cutSites is a GRanges object that contains the start and end position of the MspI sequence length around the cut sites. These cut sites can now be checked if the sequence matches the MspI sequence.
@@ -66,15 +64,15 @@ msgbsR offer two approaches to checking the cut sites. The first approach is to 
 <<run checkCuts with BSgenome>>=
 library(BSgenome.Rnorvegicus.UCSC.rn6)
 correctCuts <- checkCuts(cutSites = cutSites, cutIDs = row.names(datCounts),
-                         genome = Rnorvegicus, fasta = FALSE, seq = 'CCGG')
+                         genome = Rnorvegicus, fasta = FALSE, seq = "CCGG")
 @
 
 If a BSgenome is unavailable, another option to checking the cut sites is to use a fasta file. msgbsR comes with the fasta file for chromosome 20 from UCSC rn6. To use the checkCuts function with a fasta file simply change the genome input to the fasta file location and change the fasta option to TRUE. An example of this is shown below.
 
 <<run checkCuts>>=
-chr20 <- system.file("extdata", "chr20.fa.gz", package = 'msgbsR')
+chr20 <- system.file("extdata", "chr20.fa.gz", package = "msgbsR")
 correctCuts <- checkCuts(cutSites = cutSites, cutIDs = row.names(datCounts),
-                         genome = chr20, fasta = TRUE, seq = 'CCGG')
+                         genome = chr20, fasta = TRUE, seq = "CCGG")
 @
 
 The correctCuts data object now contains the correct cut site locations of MspI that were generated from this experiment.
@@ -92,8 +90,8 @@ Before any further downstream analyses with the table of read counts, the user m
 
 To visualize the total number of read counts against the total number of cut sites produced per sample:
 <<plot counts per cut sites >>=
-y <- data.frame(c(rep('Control', 3), rep('Fat Diet', 3)))
-colnames(y) <- 'Group'
+y <- data.frame(c(rep("Control", 3), rep("Fat Diet", 3)))
+colnames(y) <- "Group"
 plotCounts(countMatrix = datCounts, condition1 = y$Group)
 @
 
@@ -119,8 +117,8 @@ msgbsR utilizes edgeR in order to determine which cut sites are differentially m
 
 To determine which cut sites are differentiallly methylated between groups:
 <<differential methylation>>=
-top <- diffMeth(countMatrix = datCounts, pd = y, cateogory = 'Group',
-                condition1 = 'Control', condition2 = 'Fat Diet',
+top <- diffMeth(countMatrix = datCounts, pd = y, cateogory = "Group",
+                condition1 = "Control", condition2 = "Fat Diet",
                 block = NULL,
                 cpmThreshold = 1, thresholdSamples = 1)
 @
@@ -134,7 +132,7 @@ The msgbsR package contains a functions to allow visualization of the location o
 Firstly, define the length of the chromosome.
 <<chr20 length>>=
 ratChr <- seqlengths(BSgenome.Rnorvegicus.UCSC.rn6)
-ratChr <- ratChr[which(names(seqlengths(BSgenome.Rnorvegicus.UCSC.rn6)) == 'chr20')]
+ratChr <- ratChr[which(names(seqlengths(BSgenome.Rnorvegicus.UCSC.rn6)) == "chr20")]
 @
 
 Extract the differentially methylated cut sites.
@@ -144,8 +142,8 @@ my_cuts <- GRanges(top$cut_site[which(top$PValue < 0.05)])
 
 To generate a circos plot:
 <<circos plot>>=
-plotCircos(cutSites = my_cuts, genome = ratChr,
-           cutSite.colour = 'red', genome.colour = 'blue')
+plotCircos(cutSites = my_cuts, seqlengths = ratChr,
+           cutSite.colour = "red", seqlengths.colour = "blue")
 
 @
 
@@ -153,8 +151,8 @@ plotCircos(cutSites = my_cuts, genome = ratChr,
 \begin{figure}
 \begin{center}
 <<label=fig2, fig=TRUE, echo=FALSE, eps=FALSE, >>=
-plotCircos(cutSites = my_cuts, genome = ratChr,
-           cutSite.colour = 'red', genome.colour = 'blue')
+plotCircos(cutSites = my_cuts, seqlengths = ratChr,
+           cutSite.colour = "red", seqlengths.colour = "blue")
 
 @
 \end{center}
@@ -170,7 +168,7 @@ The msgbsR package can also work with gff3 files to annotate interesting positio
 
 To annotate interesting cut sites:
 <<annotation>>=
-mygff <- system.file("extdata", "chr20.gff3", package = 'msgbsR')
+mygff <- system.file("extdata", "chr20.gff3", package = "msgbsR")
 features <- closestFeat(gff = mygff, cutSites = my_cuts)
 features[1:5,1:5]
 @
