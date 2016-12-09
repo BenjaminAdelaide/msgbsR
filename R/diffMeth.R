@@ -2,7 +2,7 @@
 #'
 #' Determines differential methylated sites from a matrix of read counts
 #'
-#' @param countMatrix A data frame containing read counts. Rows are cut sites and columns are samples.
+#' @param countMatrix A matrix containing read counts. Rows are cut sites and columns are samples.
 #' @param pd A data frame containing any meta data of the samples within the countMatrix.
 #' @param cateogory The column name in pd that is to be tested for differential methylation.
 #' @param condition1 The reference group within the cateogory of pd.
@@ -21,16 +21,15 @@
 #' set.seed(1)
 #' x <- matrix(sample(0:100, size = 10000*10, replace = TRUE), nrow = 10000, ncol = 10)
 #' # Set the groups and blocking factor
-#' y <- data.frame(c(rep('A', 5), rep('B', 5)))
-#' colnames(y) <- 'group'
-#' y$Block <- rep(c(rep('C',1), rep('D', 1)), 5)
+#' y <- data.frame(c(rep("A", 5), rep("B", 5)))
+#' colnames(y) <- "group"
+#' y$Block <- rep(c(rep("C",1), rep("D", 1)), 5)
 #'
 #' # Determine differential cut sites
-#' z <- diffMeth(countMatrix = x, pd = y, cateogory = 'group', condition1 = 'A',
+#' z <- diffMeth(countMatrix = x, pd = y, cateogory = "group", condition1 = "A",
 #'               condition2 = 'B', block = 'Block', cpmThreshold = 1, thresholdSamples =3)
 #'
 #' @export
-
 
 # Function for determining differential cutting
 
@@ -39,54 +38,39 @@ diffMeth <- function(countMatrix, pd, cateogory, condition1, condition2, block =
 
   # Unit tests
   ## Check if the countMatrix is a matrix
-  countMatrixClass <- class(countMatrix)[1]
-  countMatrixClass <- ifelse(countMatrixClass == 'matrix', yes=TRUE, no=FALSE)
-  if(countMatrixClass == 'FALSE'){
+  if(!is(countMatrix, "matrix")){
     stop('countMatrix must be a matrix')
   }
 
   ## Check if pd is a data.frame
-  pdClass <- class(pd)[1]
-  pdClass <- ifelse(pdClass == 'data.frame', yes=TRUE, no=FALSE)
-  if(pdClass == 'FALSE'){
+  if(!is(pd, "data.frame")){
     stop('pd must be a data.frame')
   }
 
   ## Check if cateogory is a character
-  cateogoryClass <- class(cateogory)[1]
-  cateogoryClass <- ifelse(cateogoryClass == 'character', yes=TRUE, no=FALSE)
-  if(cateogoryClass == 'FALSE'){
+  if(!is(cateogory, "character")){
     stop('cateogory must be a character')
   }
 
   ## Check if condition1 is a character
-  condition1Class <- class(condition1)[1]
-  condition1Class <- ifelse(condition1Class == 'character', yes=TRUE, no=FALSE)
-  if(condition1Class == 'FALSE'){
+  if(!is(condition1, "character")){
     stop('condition1 must be a character')
   }
 
   ## Check if condition2 is a character
-  condition2Class <- class(condition2)[1]
-  condition2Class <- ifelse(condition2Class == 'character', yes=TRUE, no=FALSE)
-  if(condition2Class == 'FALSE'){
+  if(!is(condition2, "character")){
     stop('condition2 must be a character')
   }
 
   ## Check if cpmThreshold is a numeric
-  cpmThresholdClass <- class(cpmThreshold)[1]
-  cpmThresholdClass <- ifelse(cpmThresholdClass == 'numeric', yes=TRUE, no=FALSE)
-  if(cpmThresholdClass == 'FALSE'){
+  if(!is(cpmThreshold, "numeric")){
     stop('cpmThreshold must be a numeric')
   }
 
   ## Check if thresholdSamples is a numeric
-  thresholdSamplesClass <- class(thresholdSamples)[1]
-  thresholdSamplesClass <- ifelse(thresholdSamplesClass == 'numeric', yes=TRUE, no=FALSE)
-  if(thresholdSamplesClass == 'FALSE'){
-    stop('thresholdSamplesClass must be a numeric')
+  if(!is(thresholdSamples, "numeric")){
+    stop('thresholdSamples must be a numeric')
   }
-
 
   # Seperate the data into the two conditions
   counts <- data.frame(countMatrix[ ,pd[,cateogory] == condition1 | pd[,cateogory] == condition2])
@@ -140,7 +124,7 @@ diffMeth <- function(countMatrix, pd, cateogory, condition1, condition2, block =
 
   # Use Benjamini-Hochberg (BH) method for p-values
   lrt_top <- topTags(lrt, n = nrow(dge_expressed$counts), adjust.method = "BH", sort.by = "PValue")
-  colnames(lrt_top$table)[1] <- 'cut_site'
+  colnames(lrt_top$table)[1] <- "cut_site"
   return(lrt_top$table)
 }
 

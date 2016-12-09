@@ -4,16 +4,15 @@
 #'
 #' @param gff The path to the location of a gff file.
 #' @param cutSites A GRanges object containing the location of the cut sites.
-#' @return The closest biological feature annotated in a gff3 file.
+#' @return The closest biological feature annotated in a gff3 file to each cut site.
 #' @author Benjamin Mayne
 #' @import GenomicRanges
 #' @importFrom utils read.table
 #' @examples
 #' data(cuts)
-#' mygff <- system.file("extdata", "chr20.gff3", package = 'msgbsR')
+#' mygff <- system.file("extdata", "chr20.gff3", package = "msgbsR")
 #' features <- closestFeat(gff = mygff, cutSites = cuts)
 #' @export
-
 
 closestFeat <- function(gff, cutSites){
 
@@ -23,9 +22,9 @@ closestFeat <- function(gff, cutSites){
     pos <- regexpr("\\.([[:alnum:]]+)$", x)
     ifelse(pos > -1L, substring(x, pos + 1L), "")
   }
-  gffExt <- ifelse(extenstion(gff) == 'gff' | extenstion(gff) == 'gff3' , yes=TRUE, no=FALSE)
-  if(gffExt == 'FALSE'){
-    stop('Input is not a gff file')
+  gffExt <- ifelse(extenstion(gff) == "gff" | extenstion(gff) == "gff3" , yes=TRUE, no=FALSE)
+  if(!isTRUE(gffExt)){
+    stop("Input is not a gff or gff3 file")
   }
   gffRead <- function(gffFile, nrows = -1) {
     gff = read.table(gffFile, sep="\t", as.is=TRUE, quote="",
@@ -40,12 +39,12 @@ closestFeat <- function(gff, cutSites){
   }
 
   # Message
-  print('Reading in the gff file')
+  print("Reading in the gff file")
   # Read in the gff file
   gff <- gffRead(gffFile = gff)
 
   # Turn into a GRanges object
-  gff2 <- GRanges(seqnames = Rle(values = c(gff[,1]), lengths = as.numeric(rep('1', nrow(gff)))),
+  gff2 <- GRanges(seqnames = Rle(values = c(gff[,1]), lengths = as.numeric(rep("1", nrow(gff)))),
           ranges = IRanges(start = as.numeric(gff[,4]), end = as.numeric(gff[,5])))
   # Find the nearest feature
   nearestFeature <- gff[nearest(cutSites, gff2),]

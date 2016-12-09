@@ -1,28 +1,29 @@
 #' checkCuts
 #'
-#' Determines the sequence around a cut site using a fasta file
+#' Determines the sequence around a cut site using a fasta file or BSgenome
 #'
-#' @param cutSites A matrix where the first column is the chromosome ID, the second column is the starting position and the third column is the ending position of the cut site sequence.
+#' @param cutSites A GRanges object containing the locations of the cut sites to be checked for sequence match.
 #' @param cutIDs A character vector containing unique IDs for each cut site.
-#' @param genome The path to fasta file or a BSgenome object to check for genomic sequences.
+#' @param genome The path to a fasta file or a BSgenome object to check for genomic sequences.
 #' @param fasta TRUE if a fasta file has been supplied. Default = FALSE
-#' @param seq The desired sequence that the enzyme should have cut.
+#' @param seq The desired recognition sequence that the enzyme should have cut.
 #' @usage checkCuts(cutSites, cutIDs, genome, fasta = FALSE, seq)
 #' @author Benjamin Mayne
-#' @return cut sites that match the input sequence
+#' @return cutIDs that match the desired recognition sequence (seq)
 #' @importFrom R.utils gunzip gzip
 #' @importFrom GenomicRanges makeGRangesFromDataFrame
 #' @examples
 #' library(GenomicRanges)
+#' # Load the positions of possible MspI cut sites
 #' data(datCounts)
 #' cutSites <- GRanges(rownames(datCounts))
-#' cutSites@ranges@start <- as.integer(cutSites@ranges@start -1)
-#' cutSites@ranges@width <- as.integer(cutSites@ranges@width + 3)
+#' # Adjust positions to overlap the recognition sequence of MspI
+#' start(cutSites) <- start(cutSites) - 1
+#' end(cutSites) <- end(cutSites) + 2
 #' chr20 <- system.file("extdata", "chr20.fa.gz", package="msgbsR")
 #' correctCuts <- checkCuts(cutSites = cutSites, cutIDs = row.names(datCounts),
-#'                          genome = chr20, fasta = TRUE, seq = 'CCGG')
+#'                          genome = chr20, fasta = TRUE, seq = "CCGG")
 #' @export
-
 
 checkCuts <- function(cutSites, cutIDs, genome, fasta = FALSE, seq){
 
@@ -39,23 +40,23 @@ checkCuts <- function(cutSites, cutIDs, genome, fasta = FALSE, seq){
 
   ## If a fasta file has been supplied check
 
-  if(fasta == TRUE){
-  ## Check if the fasta file is compressed or not
+  if(isTRUE(fasta)){
+    ## Check if the fasta file is compressed or not
     extenstion <- function (x)
-  {
-    pos <- regexpr("\\.([[:alnum:]]+)$", x)
-    ifelse(pos > -1L, substring(x, pos + 1L), "")
-  }
-  fastaExt <- ifelse(extenstion(genome) == 'gz', yes=TRUE, no=FALSE)
-  if(fastaExt == 'TRUE'){
-    print('Uncompressing fasta file')
-    gunzip(genome)
-    genome <- gsub('.gz', '', genome)
-  }
+    {
+      pos <- regexpr("\\.([[:alnum:]]+)$", x)
+      ifelse(pos > -1L, substring(x, pos + 1L), "")
+    }
+    fastaExt <- ifelse(extenstion(genome) == 'gz', yes=TRUE, no=FALSE)
+    if(isTRUE(fastaExt)){
+      print('Uncompressing fasta file')
+      gunzip(genome)
+      genome <- gsub('.gz', '', genome)
+    }
   }
 
-  if(fasta == FALSE){
-  ## Check if supplied genome object is actually a BSgenome
+  if(!isTRUE(fasta)){
+    ## Check if supplied genome object is actually a BSgenome
     if(!is(genome, "BSgenome")){
       stop('genome must be a BSgenome if fasta = FALSE')
     }
@@ -66,21 +67,21 @@ checkCuts <- function(cutSites, cutIDs, genome, fasta = FALSE, seq){
     stop('seq must be of character class')
   }
 
-#=================================================================================
+  #=================================================================================
 
   # Use either a fasta file or BSgenome
-  if(fasta == TRUE){
-  # Scan the fasta file for the sequences
-  sequences <- data.frame(scanFa(genome, cutSites))
+  if(isTRUE(fasta)){
+    # Scan the fasta file for the sequences
+    sequences <- data.frame(scanFa(genome, cutSites))
 
-  if(fastaExt == 'TRUE'){
-    print('Compressing fasta file')
-    gzip(genome)
-  }
+    if(fastaExt == 'TRUE'){
+      print('Compressing fasta file')
+      gzip(genome)
+    }
 
 
-  } else if(fasta == FALSE) {
-  sequences <- data.frame(getSeq(genome, cutSites))
+  } else {
+    sequences <- data.frame(getSeq(genome, cutSites))
   }
 
   # Add the cutIDs into the data frame
@@ -93,6 +94,3 @@ checkCuts <- function(cutSites, cutIDs, genome, fasta = FALSE, seq){
   return(sequences[,2])
 
 }
-
-
-
