@@ -1,64 +1,49 @@
 #' plotCounts
 #'
-#' Plot the total number of reads vs total number of cut sites per sample
+#' Plots the total number of reads vs total number of cut sites per sample
 #'
-#' @param countMatrix A matrix containing read counts per sample.
-#' @param condition1 A character vector containing a certain condition of the samples.
-#' @param condition2 A character vector containing another certain condition of the samples. Default is NULL.
-#' @return Produces a plot showing the total number reads vs total number of cut site per sample.
-#' @usage plotCounts(countMatrix, condition1, condition2 = NULL)
+#' @param se A RangedSummarizedExperiment containing meta data of the samples.
+#' @param cateogory The heading name in the sample data to distinguish groups.
+#' @return Produces a plot showing the total number reads vs total number of cut sites per sample.
+#' @usage plotCounts(se, cateogory)
 #' @import ggplot2
 #' @author Benjamin Mayne
 #' @examples
-#' data(datCounts_filtered)
-#' y <- data.frame(c(rep("Control", 3), rep("Fat Diet", 3)))
-#' colnames(y) <- "Group"
-#' plotCounts(countMatrix = datCounts, condition1 = y$Group)
+#' data(ratdata2)
+#' plotCounts(se = ratdata2, cateogory = "Group")
 #' @export
 
-plotCounts <- function(countMatrix, condition1, condition2 = NULL){
-  # Unit tests
-  ## Check if the countMatrix is a matrix
-  if(!is(countMatrix, "matrix")){
-    stop('countMatrix must be a matrix')
-  }
+plotCounts <- function(se, cateogory){
 
-  # Determine the total number of cuts sites per sample
-  # cut sites with > 1 read produced for each sample
-  cuts <- data.frame(t(data.frame(lapply(1:ncol(countMatrix),function(x)
-    length(countMatrix[,x][which(countMatrix[,x] > 0)])))))
+    # Unit tests
+    ## Check if input is a RangedSummarizedExperiment
+    if(!is(se, "RangedSummarizedExperiment")){
+    stop("se must be a RangedSummarizedExperiment")
+    }
 
-  # Determine the library size (total number of reads)
-  libSize <- data.frame(t(data.frame(lapply(1:ncol(countMatrix),
-                                            function(x) sum(countMatrix[,x])))))
+    ## Check if cateogory is a character
+    if(!is(cateogory, "character")){
+        stop("cateogory must be a character")
+    }
 
-  if(is.null(condition2)){
+    # Determine the total number of cuts sites per sample
+    # cut sites with > 1 read produced for each sample
+    cuts <- data.frame(t(data.frame(lapply(1:ncol(assay(se)),function(x)
+    length(assay(se)[,x][which(assay(se)[,x] > 0)])))))
+
+    # Determine the library size (total number of reads)
+    libSize <- data.frame(t(data.frame(lapply(1:ncol(assay(se)),
+                                            function(x) sum(assay(se)[,x])))))
 
     # Make a data frame out of the cuts and libSize
     datPlot <- as.data.frame(cbind(cuts[,1], libSize[,1]))
-    datPlot[,3] <- condition1
-    colnames(datPlot) <- c("cuts", "libSize", "condition1")
+    datPlot[,3] <- colData(se)[,cateogory]
+    colnames(datPlot) <- c("cuts", "libSize", "cateogory")
 
-    # If else statment depending on whether or not there is a second phenotype characteristic
-    qplot(x = libSize, y = cuts, colour = condition1, data = datPlot,
+    # Plot the total number of counts vs total number of cuts
+    qplot(x = libSize, y = cuts, colour = cateogory, data = datPlot,
           xlab = "Total number of Reads per sample",
           ylab = "Total number of cut sites per sample",
           main = "")
-
-  } else {
-
-  # Make a data frame out of the cuts and libSize
-  datPlot <- as.data.frame(cbind(cuts[,1], libSize[,1]))
-  datPlot[,3] <- condition1
-  datPlot[,4] <- condition2
-  colnames(datPlot) <- c("cuts", "libSize", "condition1", "condition2")
-
-  # If else statment depending on whether or not there is a second phenotype characteristic
-    qplot(x = libSize, y = cuts, colour = condition1, shape = condition2, data = datPlot,
-          xlab = "Total number of Reads per sample",
-          ylab = "Total number of cut sites per sample",
-          main = "")
-
-  }
 
 }

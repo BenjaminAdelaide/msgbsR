@@ -2,7 +2,7 @@
 #'
 #' Plot a circos representing the cut site locations
 #'
-#' @param cutSites A GRanges object containing the locations of the cut sites.
+#' @param cutSites A GRanges object containing the locations of the cut sites to be plotted.
 #' @param seqlengths An integer with the lengths of the chromosomes.
 #' @param cutSite.colour The colour of the cut sites.
 #' @param seqlengths.colour The colour of the chromosomes
@@ -16,9 +16,12 @@
 #' @import ggplot2
 #' @author Benjamin Mayne
 #' @examples
+#' # load example cut site positions
 #' data(cuts)
-#' data(ratChr)
-#' plotCircos(cutSites = cuts, seqlengths = ratChr,
+#' # Obtain the length of chromosome 20 in rn6
+#' library(BSgenome.Rnorvegicus.UCSC.rn6)
+#' chr20 <- seqlengths(BSgenome.Rnorvegicus.UCSC.rn6)["chr20"]
+#' plotCircos(cutSites = cuts, seqlengths = chr20,
 #'            cutSite.colour = "red", seqlengths.colour = "blue")
 #' @export
 

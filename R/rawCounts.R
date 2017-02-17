@@ -2,144 +2,139 @@
 #'
 #' Imports the raw read counts from sorted and indexed bam file(s)
 #'
-#' @param bamFilepath The path to the location of bam file(s).
+#' @param bamFilepath The path to the location of the bam file(s).
 #' @param threads The total number of usable threads to be used. Default is 1.
 #' @usage rawCounts(bamFilepath, threads = 1)
-#' @return Produces an integer matrix where the columns are samples and the rows are cut sites. The cut site IDs are in the format chr:position-position.
+#' @return Produces a RangedSummarizedExperiment. Columns are samples and the rows are cut sites. The cut site IDs are in the format chr:position-position:strand.
 #' @importFrom easyRNASeq validate BamFileList
 #' @import Rsamtools
 #' @import GenomicFeatures
 #' @import GenomicRanges
+#' @import GenomicAlignments
 #' @import plyr
 #' @import parallel
+#' @import SummarizedExperiment
 #' @author Benjamin Mayne, Sam Buckberry
 #' @examples
-#'my_path <- system.file("extdata", "", package = "msgbsR")
-#'datCounts <- rawCounts(bamFilepath = my_path, threads = 1)
+#'my_path <- system.file("extdata", package = "msgbsR")
+#'my_data <- rawCounts(bamFilepath = my_path)
 #' @export
 
 
 # Function to make the raw count matrix
 rawCounts <- function(bamFilepath, threads = 1){
 
-  # function to get counts for start of each read
-  readCounts <- function(bamFilepath){
-    # Set the features to extract for each BAM record
-    what <- c('rname', 'strand', 'pos', 'qwidth')
-    # Set the scan parameters
-    scanParam <- ScanBamParam(flag=scanBamFlag(isDuplicate=NA,
-                                               isUnmappedQuery=FALSE),
-                              what=what)
+    # function to get counts for start of each read
+    readCounts <- function(bamFiles){
+        # Set the features to extract for each BAM record
+        what <- c("rname", "strand", "pos", "qwidth")
+        # Set the scan parameters
+        scanParam <- ScanBamParam(flag=scanBamFlag(isDuplicate=NA,
+                                                   isUnmappedQuery=FALSE),
+                                  what=what)
 
-    bam <- scanBam(bamFilepath, param=scanParam)
+        gal <- readGAlignments(file = bamFiles, param = scanParam)
 
-    # Get the bam data in a list as per the Rsamtools documentation
-    lst <- lapply(names(bam[[1]]), function(elt) {
-      do.call(c, unname(lapply(bam, '[[', elt)))
-    })
-    names(lst) <- names(bam[[1]])
+        # Get the read starts
+        readStart <- ifelse(strand(gal) == "-", end(gal), start(gal))
 
-    df <- do.call('data.frame', lst)
+        # convert to a data frame
+        df <- data.frame(gal)
 
-    # Get the position of the read for + and - strand. Remember the mapping
-    # to the minus strand has the read in the opposite orientation
-    # Minus 1 for the zero based coordinates
-    df$readStart <- as.integer(ifelse(test=df$strand == 2,
-                                      yes=df$pos + df$qwidth - 1, no=df$pos))
+        # add readStart
+        df$start <- readStart
 
-    # Set the chromosome names
-    rname_new <- bam[[1]][1]
-    rname_new <- as.character(rname_new$rname)
-    df$rname <- rname_new
+        # Count the number of reads starting at each locus
+        out <- ddply(df, c("rname", "strand", "start"), .fun=nrow)
+        colnames(out)[4] <- "count"
 
-    # remove the irrelevant columns
-    df <- df[ ,c(1, 2, 5)]
-    df <- data.frame(df)
+        # Create a unique locus identifier
+        out$id <- paste(out$rname, out$start, sep=":")
+        out$id <- paste(out$id, out$start, sep="-")
+        out$id <- paste(out$id, out$strand, sep=":")
 
-    # Count the number of reads starting at each locus
-    out <- ddply(df, c('rname', 'strand', 'readStart'), .fun=nrow)
-    colnames(out)[4] <- 'count'
+        # Add the sample name
+        out$sample <- basename(bamFiles)
 
-    # Create a unique locus identifier
-    out$id <- paste(out$rname, out$readStart, sep=':')
-    out$id <- paste(out$id, out$readStart, sep='-')
+        # output the dataframe
+        out
+    }
 
-    # Add the sample name
-    out$sample <- basename(bamFilepath)
+    #============================================================================================
+    # Firstly check if the threads input vaue is numeric
+    if(!is(threads, "numeric")){
+        stop("The threads must be a numeric value")
+    }
 
-    # output the dataframe
-    out
-  }
+    # Get a list of all the bam files
+    bamFiles <- list.files(path=bamFilepath,
+                           full.names=TRUE, pattern=".bam$")
 
-  #============================================================================================
-  # Firstly check if the threads input vaue is numeric
-  if(!is(threads, 'numeric')){
-    stop('The threads must be a numeric value')
-  }
+    # Get a list of all the indexed files (*.bai)
+    baiFiles <- list.files(path=bamFilepath,
+                           full.names=TRUE, pattern=".bai$")
 
-  # Get a list of all the bam files
-  bamFiles <- list.files(path=bamFilepath,
-                         full.names=TRUE, pattern='.bam$')
+    # Make a stop function if a bam file is missing an indexed file
+    BAMS <- basename(bamFiles)
+    BAIS <- gsub(".bai", "", basename(baiFiles))
 
-  # Get a list of all the indexed files (*.bai)
-  baiFiles <- list.files(path=bamFilepath,
-                         full.names=TRUE, pattern='.bai$')
+    NoBAIS <- BAMS[which(BAMS %in% BAIS == 'FALSE')]
 
-  # Make a stop function if a bam file is missing an indexed file
-  BAMS <- basename(bamFiles)
-  BAIS <- gsub('.bai', '', basename(baiFiles))
+    if(length(NoBAIS) != 0){
+        message <- paste(c("The following sample(s) are missing indexed files", NoBAIS), sep='\t', collapse = ', ')
+        message <- gsub("files,", "files:", message)
+        stop(message)
+    }
 
-  NoBAIS <- BAMS[which(BAMS %in% BAIS == 'FALSE')]
+    # Check that the BAM files are missing a EOF header
+    validate(BamFileList(bamFiles,index=bamFiles))
 
-  if(length(NoBAIS) != 0){
-    message <- paste(c('The following sample(s) are missing indexed files', NoBAIS), sep='\t', collapse = ', ')
-    message <- gsub('files,', 'files:', message)
-    stop(message)
-  }
+    # Run readCounts on each bam with multiple threads
+    dat <- mclapply(X = bamFiles, FUN=readCounts, mc.cores=threads)
 
-  # Check that the BAM files are missing a EOF header
-  validate(BamFileList(bamFiles,index=bamFiles))
+    # Turn the list into a data frame
+    dat <- ldply(dat)
 
-  # Use the function readCounts to get the start position of each read
-  dat <- readCounts(bamFilepath=bamFiles[1])
+    # Get all the unique cut sites
+    ids <- unique(dat$id)
 
-  ###### Insert a stop function here if any are duplicated ##########
-  anyDuplicated(dat$id)
+    # Setup the raw count matrix
+    countMatrix <- matrix(data=0, nrow=length(ids), ncol=length(bamFiles))
+    row.names(countMatrix) <- ids
+    colnames(countMatrix) <- basename(bamFiles)
 
-  # Run readCounts on each bam with multiple threads
-  dat <- mclapply(bamFiles, FUN=readCounts, mc.cores=threads)
+    # Function to match locus ids in each sample and get counts
+    bams <- basename(bamFiles)
 
-  # Turn the list into a data frame
-  dat <- ldply(dat)
+    for(i in 1:length(bams)){
+        # Subset the sample of interest
+        sampleDat <- dat[dat$sample == bams[i], ]
 
-  # Get all the unique cut sites
-  ids <- unique(dat$id)
+        #First, get the location of the matching ids for the sample in the matrix
+        index <- match(x=sampleDat$id, table=row.names(countMatrix))
 
-  # Setup the raw count matrix
-  countMatrix <- matrix(data=0, nrow=length(ids), ncol=length(bamFiles))
-  row.names(countMatrix) <- ids
-  colnames(countMatrix) <- basename(bamFiles)
+        counts <- sampleDat$count
 
-  # Function to match locus ids in each sample and get counts
-  bams <- basename(bamFiles)
+        countMatrix[index, i] <- counts
+    }
 
-  for(i in 1:length(bams)){
-    # Subset the sample of interest
-    sampleDat <- dat[dat$sample == bams[i], ]
+    # Remove the .bam extension from the colNames
+    colnames(countMatrix) <- gsub(pattern=".bam", replacement="", colnames(countMatrix))
 
-    #First, get the location of the matching ids for the sample in the matrix
-    index <- match(x=sampleDat$id, table=row.names(countMatrix))
+    # Convert to an integer matrix
+    countMatrix <- apply(countMatrix, c(1, 2), function(x) {(as.integer(x))})
 
-    counts <- sampleDat$count
+    # Output the data as a RangedSummarizedExperiment
+    se <- SummarizedExperiment(assays=list(counts=countMatrix),
+                         rowRanges=GRanges(rownames(countMatrix)), colData=colnames(countMatrix))
 
-    countMatrix[index, i] <- counts
-  }
-
-  # Remove the .bam extension from the colNames
-  colnames(countMatrix) <- gsub(pattern='.bam', replacement='', colnames(countMatrix))
-
-  # Convert to an integer matrix
-  countMatrix <- apply(countMatrix, c(1, 2), function(x) {(as.integer(x))})
-
-  return(countMatrix)
+    return(se)
 }
+
+
+
+
+
+
+
+

@@ -4,62 +4,50 @@
 #' @docType package
 NULL
 
-#' A table of read counts from a MS-GBS experiment
+#' Read counts of potential MspI cut sites from a MS-GBS experiment of prostates from rats
 #'
-#' An integer matrix containing read counts generated from a MS-GBS experiment using the restriction enzyme MspI, focusing on chromosome 20 of Rat.
+#' A RangedSummarizedExperiment containing read counts generated from a MS-GBS experiment using the restriction enzyme MspI, focusing on chromosome 20 of Rat.
 #'
 #' \itemize{
-#'		\item datCounts a matrix with 16977 rows (Potential MspI cut sites on chromosome 20) and six columns (samples).
+#'		\item ratdata A RangedSummarizedExperiment with 16047 potential MspI cut sites on chromosome 20 in Rat and six samples (3 Control and 3 Experimental).
 #' }
 #' @docType data
 #' @keywords datasets
-#' @name datCounts
-#' @usage data(datCounts)
-#' @format A 16977x6 integer matrix
-#' @return A 16977x6 integer matrix
+#' @name ratdata
+#' @usage data(ratdata)
+#' @format RangedSummarizedExperiment
+#' @details This dataset contains six prostate samples from rats: 3 control and 3 experimental high fat diet.
+#' @return RangedSummarizedExperiment
 NULL
 
-#' A table of read counts from a MS-GBS experiment after filtering incorrect cut sites
+#' Read counts of correct MspI cut sites from a MS-GBS experiment of prostates from rats
 #'
-#' An integer matrix of read counts with correct locations of MspI cuts of chromosome 20 from Rat.
+#' A RangedSummarizedExperiment containing read counts generated from a MS-GBS experiment using the restriction enzyme MspI, focusing on chromosome 20 of Rat. The sites have been checked for the correct recognition site.
 #'
 #' \itemize{
-#'		\item datCounts_filtered a matrix with 7178 rows (Correct MspI cut sites) and six columns (samples)
+#'		\item ratdata2 A RangedSummarizedExperiment containing data for 13983 MspI cut sites on chromosome 20 in Rat and six samples (3 Control and 3 Experimental).
 #' }
 #' @docType data
 #' @keywords datasets
-#' @name datCounts_filtered
-#' @usage data(datCounts_filtered)
-#' @format A 7178x6 integer matrix
-#' @return A 7178x6 integer matrix
+#' @name ratdata2
+#' @usage data(ratdata2)
+#' @format RangedSummarizedExperiment
+#' @details This dataset contains six prostate samples from rats: 3 control and 3 experimental high fat diet. The data can be used for differential methylation analyses.
+#' @return RangedSummarizedExperiment
 NULL
 
-#' The length of chromsome 20 in Rats (rn6 UCSC)
+#' A GRanges object of differentially methylated MspI cut sites on chromosome 20 in Rat from a MS-GBS experiment.
 #'
-#' An integer with the length of base pairs of chr20 in Rat (rn6 UCSC).
-#'
-#' \itemize{
-#'		\item ratChr an integer of the value 56205956
-#' }
-#' @docType data
-#' @keywords datasets
-#' @name ratChr
-#' @usage data(ratChr)
-#' @format An integer of length 1
-#' @return An integer of length 1
-NULL
-
-#' A GRanges object of differentially methylated MspI cut sites from a MS-GBS experiment.
-#'
-#' The GRanges object was created from a list of differentially methylated cut sites from a MS-GBS experiment between two groups of rats that were fed different diets.
+#' The GRanges object was created from a list of differentially methylated cut sites from a MS-GBS experiment between two groups of rats that were fed either a control diet or a high fat diet.
 #'
 #' \itemize{
-#'		\item Positions of MspI cut sites differentially methylated on chromosome 20 in Rats.
+#'		\item Positions of MspI cut sites differentially methylated in the prostate on chromosome 20 in Rats.
 #' }
 #' @docType data
 #' @keywords datasets
 #' @name cuts
 #' @usage data(cuts)
-#' @format A GRanges object of length 363.
-#' @return A GRanges object of length 363.
+#' @format A GRanges object of length 10.
+#' @details The data set contains 10 differentially methylated sites in the prostate between rats fed a control or high fat diet.
+#' @return A GRanges object of length 10.
 NULL
