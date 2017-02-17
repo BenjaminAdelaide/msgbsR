@@ -20,12 +20,11 @@
 #' data(ratdata)
 #' # Extract the cut sites
 #' cutSites <- rowRanges(ratdata)
-#' # Adjust for positive strand
-#' start(cutSites[strand(cutSites) == "+"]) <- start(cutSites[strand(cutSites) == "+"]) - 1
-#' end(cutSites[strand(cutSites) == "+"]) <- end(cutSites[strand(cutSites) == "+"]) + 2
-#' # Adjust for negative strand
-#' start(cutSites[strand(cutSites) == "-"]) <- start(cutSites[strand(cutSites) == "-"]) - 2
-#' end(cutSites[strand(cutSites) == "-"]) <- end(cutSites[strand(cutSites) == "-"]) + 1
+#' # Adjust the cut sites to overlap recognition site on each strand
+#' start(cutSites) <- ifelse(test = strand(cutSites) == '+',
+#'                           yes = start(cutSites) - 1, no = start(cutSites) - 2)
+#' end(cutSites) <- ifelse(test = strand(cutSites) == '+',
+#'                         yes = end(cutSites) + 2, no = end(cutSites) + 1)
 #' correctCuts <- checkCuts(cutSites = cutSites, genome = "rn6", seq = "CCGG")
 #' @export
 
