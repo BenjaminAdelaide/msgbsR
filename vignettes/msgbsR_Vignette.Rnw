@@ -29,32 +29,43 @@ Here we present msgbsR, an R package for data analysis of MS-GBS experiments. Re
 
 \section{Reading data into R}
 
-The analysis with the msgbsR pipeline begins with a directory which contains sorted and indexed BAM file(s). msgbsR contains an example data set containing 6 samples from a MS-GBS experiment using the restriction enzyme MspI. In this example the 6 samples are from the prostate of a rat and have be truncated for chromosome 20. 3 of the samples were fed a control diet and the other 3 were fed an experimental high fat diet.
+The analysis with the msgbsR pipeline begins with a directory which contains sorted and indexed BAM file(s). msgbsR contains an example data set containing 6 samples from a MS-GBS experiment using the restriction enzyme MspI. In this example the 6 samples are from the prostate of a rat and have been truncated for chromosome 20. 3 of the samples were fed a control diet and the other 3 were fed an experimental high fat diet.
 
 To read in the data directly into the R environment can be done using the rawCounts() function, which requires the directory path to where the sorted and indexed files are located and the desired number of threads to be run (Default = 1).
 
 <<load the example data>>=
 library(msgbsR)
-library(ggplot2)
 library(GenomicRanges)
+library(SummarizedExperiment)
 
-my_path <- system.file("extdata", "", package = "msgbsR")
-datCounts <- rawCounts(bamFilepath = my_path, threads = 1)
+my_path <- system.file("extdata", package = "msgbsR")
+se <- rawCounts(bamFilepath = my_path)
+dim(assay(se))
 @
 
-The result is a data frame object containing a table of read counts. The columns are samples and the rows contain the location of each unique cut sites. Each cut site has been given a unique ID.
+The result is an RangedSummarizedExperiment object containing the read counts. The columns are samples and the rows contain the location of each unique cut sites. Each cut site has been given a unique ID (chr:position-position:strand). The cut site IDs can be turned into a GRanges object. Information regarding the samples such as treatment or other groups can be added into the return object as shown below
+
+<<insert metadata >>=
+colData(se) <- DataFrame(Group = c(rep("Control", 3), rep("Experimental", 3)),
+                         row.names = colnames(assay(se)))
+@
 
 \section{Confirmation of correct cut sites}
 
-After the table of read counts has been generated into the R environment, the next step is to confirm that the cut sites were the correctly generated sites. In this example, the restriction enzyme that has been used is MspI which recognizes a 4bp sequence (CCGG).
+After the data has been generated into the R environment, the next step is to confirm that the cut sites were the correctly generated sites. In this example, the methylated sensitive restriction enzyme that has been used is MspI which recognizes a 4bp sequence (C/CGG). MspI cuts between the two cytosines when the outside cytosine is methylated.
 
-The first step is to extract the location of the cut sites from datCounts and adjust the cut sites such that the region will cover the recognition sequence of MspI.
+The first step is to extract the location of the cut sites from se and adjust the cut sites such that the region will cover the recognition sequence of MspI. It is important to note that in this example the user must adjust the region over the cut sites specifically for each strand. In other words although the enzyme cuts at C/CGG on the minus strand this would appear as CCG/G. The code below shows how to adjust the postioining of the cut sites to cover the recginition site on each strand.
 
 <<extract cut sites>>=
-cutSites  <- GRanges(rownames(datCounts))
+cutSites <- rowRanges(se)
 
-start(cutSites) <- start(cutSites) - 1
-end(cutSites) <- end(cutSites) + 2
+# Adjust on positive strand
+start(cutSites[strand(cutSites) == "+"]) <- start(cutSites[strand(cutSites) == "+"]) - 1
+end(cutSites[strand(cutSites) == "+"]) <- end(cutSites[strand(cutSites) == "+"]) + 2
+
+# Adjust on negative strand
+start(cutSites[strand(cutSites) == "-"]) <- start(cutSites[strand(cutSites) == "-"]) - 2
+end(cutSites[strand(cutSites) == "-"]) <- end(cutSites[strand(cutSites) == "-"]) + 1
 @
 
 The object cutSites is a GRanges object that contains the start and end position of the MspI sequence length around the cut sites. These cut sites can now be checked if the sequence matches the MspI sequence.
@@ -63,36 +74,34 @@ msgbsR offer two approaches to checking the cut sites. The first approach is to 
 
 <<run checkCuts with BSgenome>>=
 library(BSgenome.Rnorvegicus.UCSC.rn6)
-correctCuts <- checkCuts(cutSites = cutSites, cutIDs = row.names(datCounts),
-                         genome = Rnorvegicus, fasta = FALSE, seq = "CCGG")
+correctCuts <- checkCuts(cutSites = cutSites, genome = "rn6", seq = "CCGG")
 @
 
-If a BSgenome is unavailable, another option to checking the cut sites is to use a fasta file. msgbsR comes with the fasta file for chromosome 20 from UCSC rn6. To use the checkCuts function with a fasta file simply change the genome input to the fasta file location and change the fasta option to TRUE. An example of this is shown below.
+If a BSgenome is unavailable for a species of interest, another option to checking the cut sites is to use a fasta file. msgbsR comes with the fasta file for chromosome 20 from UCSC rn6. To use the checkCuts function with a fasta file simply change the genome input to the fasta file location and change the fasta option to TRUE. An example of this is shown below.
 
 <<run checkCuts>>=
 chr20 <- system.file("extdata", "chr20.fa.gz", package = "msgbsR")
-correctCuts <- checkCuts(cutSites = cutSites, cutIDs = row.names(datCounts),
-                         genome = chr20, fasta = TRUE, seq = "CCGG")
+correctCuts <- checkCuts(cutSites = cutSites, genome = chr20, fasta = TRUE, seq = "CCGG")
+
 @
 
-The correctCuts data object now contains the correct cut site locations of MspI that were generated from this experiment.
+The correctCuts data object is in the format of a GRanges object and contains the correct sites that contained the recognition sequence. These sites can be kept within se by using the subsetByOverlaps function.
 
 The incorrect MspI cut sites can be filtered out of datCounts:
 <<filter out incorrect cuts>>=
-datCounts <- datCounts[match(correctCuts, row.names(datCounts)), ]
+se <- subsetByOverlaps(se, correctCuts)
+dim(assay(se))
 @
 
-datCounts now contains the correct cut sites and can now be used in downstream analyses.
+se now contains the correct cut sites and can now be used in downstream analyses.
 
 \section{Visualization of read counts}
 
-Before any further downstream analyses with the table of read counts, the user may want to filter out samples that did not generate a sufficient number of read counts or cut sites. The msgbsR package contains a function which plots the total number of read counts against the total number of cut sites produced per sample.
+Before any further downstream analyses with the data, the user may want to filter out samples that did not generate a sufficient number of read counts or cut sites. The msgbsR package contains a function which plots the total number of read counts against the total number of cut sites produced per sample. The user can also use the function to visulaise if different categories or groups produced varying amount of cut sites or total amount of reads.
 
 To visualize the total number of read counts against the total number of cut sites produced per sample:
 <<plot counts per cut sites >>=
-y <- data.frame(c(rep("Control", 3), rep("Fat Diet", 3)))
-colnames(y) <- "Group"
-plotCounts(countMatrix = datCounts, condition1 = y$Group)
+plotCounts(se = se, cateogory = "Group")
 @
 
 This function generates a plot (Figure 1) where the x axis and y axis represents the total number of reads and the total number of cut sites produced for each sample respectively.
@@ -101,7 +110,7 @@ This function generates a plot (Figure 1) where the x axis and y axis represents
 \begin{figure}
 \begin{center}
 <<label=fig1, fig=TRUE, echo=FALSE, eps=FALSE, >>=
-plotCounts(countMatrix = datCounts, condition1 = y$Group)
+plotCounts(se = se, cateogory = "Group")
 @
 \end{center}
 \caption{The distribution of the total number of reads and cut sites produced by each sample.}
@@ -110,16 +119,14 @@ plotCounts(countMatrix = datCounts, condition1 = y$Group)
 
 \clearpage
 
-
 \section{Differential methylation analysis}
 
 msgbsR utilizes edgeR in order to determine which cut sites are differentially methylated between groups. Since MS-GBS experiments can have multiple groups or conditions msgbsR offers a wrapper function of edgeR (Zhou et al., 2014) tools to automate differential methylation analyses.
 
 To determine which cut sites are differentiallly methylated between groups:
 <<differential methylation>>=
-top <- diffMeth(countMatrix = datCounts, pd = y, cateogory = "Group",
-                condition1 = "Control", condition2 = "Fat Diet",
-                block = NULL,
+top <- diffMeth(se = se, cateogory = "Group",
+                condition1 = "Control", condition2 = "Experimental",
                 cpmThreshold = 1, thresholdSamples = 1)
 @
 
@@ -127,24 +134,22 @@ The top object now contains a data frame of the cut sites that had a CPM > 1 in 
 
 \section{Visualization of cut site locations}
 
-The msgbsR package contains a functions to allow visualization of the location of the cut sites. Given the lengths of the chromosomes the cut sites can be visualized in a circos plot (Figure 2).
+The msgbsR package contains a function to allow visualization of the location of the cut sites. Given the lengths of the chromosomes the cut sites can be visualized in a circos plot (Figure 2).
 
 Firstly, define the length of the chromosome.
 <<chr20 length>>=
-ratChr <- seqlengths(BSgenome.Rnorvegicus.UCSC.rn6)
-ratChr <- ratChr[which(names(seqlengths(BSgenome.Rnorvegicus.UCSC.rn6)) == "chr20")]
+ratChr <- seqlengths(BSgenome.Rnorvegicus.UCSC.rn6)["chr20"]
 @
 
 Extract the differentially methylated cut sites.
 <<top sites>>=
-my_cuts <- GRanges(top$cut_site[which(top$PValue < 0.05)])
+my_cuts <- GRanges(top$site[which(top$FDR < 0.05)])
 @
 
 To generate a circos plot:
 <<circos plot>>=
 plotCircos(cutSites = my_cuts, seqlengths = ratChr,
            cutSite.colour = "red", seqlengths.colour = "blue")
-
 @
 
 \setkeys{Gin}{width=1\linewidth}
@@ -153,7 +158,6 @@ plotCircos(cutSites = my_cuts, seqlengths = ratChr,
 <<label=fig2, fig=TRUE, echo=FALSE, eps=FALSE, >>=
 plotCircos(cutSites = my_cuts, seqlengths = ratChr,
            cutSite.colour = "red", seqlengths.colour = "blue")
-
 @
 \end{center}
 \caption{A circos plot of chromosome 20 representing cut sites defined by the user.}
@@ -161,17 +165,6 @@ plotCircos(cutSites = my_cuts, seqlengths = ratChr,
 \end{figure}
 
 \clearpage
-
-\section{Annotation}
-
-The msgbsR package can also work with gff3 files to annotate interesting positions such as those that might be differentially methylated. Annotation can be done using the closestFeat() function. To use closestFeat() the user needs to input the path to the gff3 file, the cut sites in the form of a matrix and whether or not the user wants to look at strand specific features.
-
-To annotate interesting cut sites:
-<<annotation>>=
-mygff <- system.file("extdata", "chr20.gff3", package = "msgbsR")
-features <- closestFeat(gff = mygff, cutSites = my_cuts)
-features[1:5,1:5]
-@
 
 \section{Session Information}
 This analysis was conducted on:
