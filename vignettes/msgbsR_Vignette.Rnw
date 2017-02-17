@@ -59,13 +59,11 @@ The first step is to extract the location of the cut sites from se and adjust th
 <<extract cut sites>>=
 cutSites <- rowRanges(se)
 
-# Adjust on positive strand
-start(cutSites[strand(cutSites) == "+"]) <- start(cutSites[strand(cutSites) == "+"]) - 1
-end(cutSites[strand(cutSites) == "+"]) <- end(cutSites[strand(cutSites) == "+"]) + 2
-
-# Adjust on negative strand
-start(cutSites[strand(cutSites) == "-"]) <- start(cutSites[strand(cutSites) == "-"]) - 2
-end(cutSites[strand(cutSites) == "-"]) <- end(cutSites[strand(cutSites) == "-"]) + 1
+# # Adjust the cut sites to overlap recognition site on each strand
+start(cutSites) <- ifelse(test = strand(cutSites) == '+',
+                          yes = start(cutSites) - 1, no = start(cutSites) - 2)
+end(cutSites) <- ifelse(test = strand(cutSites) == '+',
+                          yes = end(cutSites) + 2, no = end(cutSites) + 1)
 @
 
 The object cutSites is a GRanges object that contains the start and end position of the MspI sequence length around the cut sites. These cut sites can now be checked if the sequence matches the MspI sequence.
