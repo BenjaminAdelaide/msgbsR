@@ -7,19 +7,19 @@
 rawCounts(bamFilepath, threads = 1)
 }
 \arguments{
-\item{bamFilepath}{The path to the location of bam file(s).}
+\item{bamFilepath}{The path to the location of the bam file(s).}
 
 \item{threads}{The total number of usable threads to be used. Default is 1.}
 }
 \value{
-Produces an integer matrix where the columns are samples and the rows are cut sites. The cut site IDs are in the format chr:position-position.
+Produces a RangedSummarizedExperiment. Columns are samples and the rows are cut sites. The cut site IDs are in the format chr:position-position:strand.
 }
 \description{
 Imports the raw read counts from sorted and indexed bam file(s)
 }
 \examples{
-my_path <- system.file("extdata", "", package = "msgbsR")
-datCounts <- rawCounts(bamFilepath = my_path, threads = 1)
+my_path <- system.file("extdata", package = "msgbsR")
+my_data <- rawCounts(bamFilepath = my_path)
 }
 \author{
 Benjamin Mayne, Sam Buckberry

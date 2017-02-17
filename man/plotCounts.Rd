@@ -4,26 +4,22 @@
 \alias{plotCounts}
 \title{plotCounts}
 \usage{
-plotCounts(countMatrix, condition1, condition2 = NULL)
+plotCounts(se, cateogory)
 }
 \arguments{
-\item{countMatrix}{A matrix containing read counts per sample.}
+\item{se}{A RangedSummarizedExperiment containing meta data of the samples.}
 
-\item{condition1}{A character vector containing a certain condition of the samples.}
-
-\item{condition2}{A character vector containing another certain condition of the samples. Default is NULL.}
+\item{cateogory}{The heading name in the sample data to distinguish groups.}
 }
 \value{
-Produces a plot showing the total number reads vs total number of cut site per sample.
+Produces a plot showing the total number reads vs total number of cut sites per sample.
 }
 \description{
-Plot the total number of reads vs total number of cut sites per sample
+Plots the total number of reads vs total number of cut sites per sample
 }
 \examples{
-data(datCounts_filtered)
-y <- data.frame(c(rep("Control", 3), rep("Fat Diet", 3)))
-colnames(y) <- "Group"
-plotCounts(countMatrix = datCounts, condition1 = y$Group)
+data(ratdata2)
+plotCounts(se = ratdata2, cateogory = "Group")
 }
 \author{
 Benjamin Mayne

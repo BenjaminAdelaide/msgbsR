@@ -4,12 +4,10 @@
 \alias{checkCuts}
 \title{checkCuts}
 \usage{
-checkCuts(cutSites, cutIDs, genome, fasta = FALSE, seq)
+checkCuts(cutSites, genome, fasta = FALSE, seq)
 }
 \arguments{
-\item{cutSites}{A GRanges object containing the locations of the cut sites to be checked for sequence match.}
-
-\item{cutIDs}{A character vector containing unique IDs for each cut site.}
+\item{cutSites}{A GRanges object containing the locations of the cut sites to be checked for sequence match. The names of the correct cut sites will be returned as a GRanges object.}
 
 \item{genome}{The path to a fasta file or a BSgenome object to check for genomic sequences.}
 
@@ -18,22 +16,26 @@ checkCuts(cutSites, cutIDs, genome, fasta = FALSE, seq)
 \item{seq}{The desired recognition sequence that the enzyme should have cut.}
 }
 \value{
-cutIDs that match the desired recognition sequence (seq)
+A GRanges object containing the names of the sites that had the correct sequence.
 }
 \description{
 Determines the sequence around a cut site using a fasta file or BSgenome
 }
 \examples{
 library(GenomicRanges)
+library(SummarizedExperiment)
+library(BSgenome.Rnorvegicus.UCSC.rn6)
 # Load the positions of possible MspI cut sites
-data(datCounts)
-cutSites <- GRanges(rownames(datCounts))
-# Adjust positions to overlap the recognition sequence of MspI
-start(cutSites) <- start(cutSites) - 1
-end(cutSites) <- end(cutSites) + 2
-chr20 <- system.file("extdata", "chr20.fa.gz", package="msgbsR")
-correctCuts <- checkCuts(cutSites = cutSites, cutIDs = row.names(datCounts),
-                         genome = chr20, fasta = TRUE, seq = "CCGG")
+data(ratdata)
+# Extract the cut sites
+cutSites <- rowRanges(ratdata)
+# Adjust for positive strand
+start(cutSites[strand(cutSites) == "+"]) <- start(cutSites[strand(cutSites) == "+"]) - 1
+end(cutSites[strand(cutSites) == "+"]) <- end(cutSites[strand(cutSites) == "+"]) + 2
+# Adjust for negative strand
+start(cutSites[strand(cutSites) == "-"]) <- start(cutSites[strand(cutSites) == "-"]) - 2
+end(cutSites[strand(cutSites) == "-"]) <- end(cutSites[strand(cutSites) == "-"]) + 1
+correctCuts <- checkCuts(cutSites = cutSites, genome = "rn6", seq = "CCGG")
 }
 \author{
 Benjamin Mayne

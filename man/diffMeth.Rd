@@ -4,45 +4,36 @@
 \alias{diffMeth}
 \title{diffMeth}
 \usage{
-diffMeth(countMatrix, pd, cateogory, condition1, condition2,
+diffMeth(se, cateogory, condition1, condition2,
                  block = NULL, cpmThreshold, thresholdSamples)
 }
 \arguments{
-\item{countMatrix}{A matrix containing read counts. Rows are cut sites and columns are samples.}
+\item{se}{A RangedSummarizedExperiment containing meta data of the samples.}
 
-\item{pd}{A data frame containing any meta data of the samples within the countMatrix.}
+\item{cateogory}{The heading name in the sample data to be tested for differential methylation.}
 
-\item{cateogory}{The column name in pd that is to be tested for differential methylation.}
+\item{condition1}{The reference group within the cateogory.}
 
-\item{condition1}{The reference group within the cateogory of pd.}
+\item{condition2}{The experimental group within the cateogory.}
 
-\item{condition2}{The experimental group within the cateogory of pd.}
-
-\item{block}{The column name of pd if differential methylation is to be tested with a blocking factor. Default is NULL.}
+\item{block}{The heading name in the sample data if differential methylation is to be tested with a blocking factor. Default is NULL.}
 
 \item{cpmThreshold}{Counts per million threshold of read counts to be filtered out of the analysis.}
 
 \item{thresholdSamples}{Minimum number of samples to contain the counts per million threshold.}
 }
 \value{
-A data frame containing which cut sites are differenitally cut.
+A data frame containing which cut sites that are differenitally methylated.
 }
 \description{
-Determines differential methylated sites from a matrix of read counts
+Determines differential methylated sites from a RangedSummarizedExperiment
 }
 \examples{
-# Make a read counts data frame
-set.seed(1)
-x <- matrix(sample(0:100, size = 10000*10, replace = TRUE), nrow = 10000, ncol = 10)
-# Set the groups and blocking factor
-y <- data.frame(c(rep("A", 5), rep("B", 5)))
-colnames(y) <- "group"
-y$Block <- rep(c(rep("C",1), rep("D", 1)), 5)
-
-# Determine differential cut sites
-z <- diffMeth(countMatrix = x, pd = y, cateogory = "group", condition1 = "A",
-              condition2 = 'B', block = 'Block', cpmThreshold = 1, thresholdSamples =3)
-
+# Load data
+data(ratdata2)
+top <- diffMeth(se = ratdata2, cateogory = "Group",
+       condition1 = "Control", condition2 = "Experimental",
+       cpmThreshold = 1, thresholdSamples = 1)
 }
 \author{
 Benjamin Mayne

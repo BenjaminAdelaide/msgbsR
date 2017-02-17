@@ -3,21 +3,23 @@
 \docType{data}
 \name{cuts}
 \alias{cuts}
-\title{A GRanges object of differentially methylated MspI cut sites from a MS-GBS experiment.}
-\format{A GRanges object of length 363.}
+\title{A GRanges object of differentially methylated MspI cut sites on chromosome 20 in Rat from a MS-GBS experiment.}
+\format{A GRanges object of length 10.}
 \usage{
 data(cuts)
 }
 \value{
-A GRanges object of length 363.
+A GRanges object of length 10.
 }
 \description{
-The GRanges object was created from a list of differentially methylated cut sites from a MS-GBS experiment between two groups of rats that were fed different diets.
+The GRanges object was created from a list of differentially methylated cut sites from a MS-GBS experiment between two groups of rats that were fed either a control diet or a high fat diet.
 }
 \details{
 \itemize{
-	\item Positions of MspI cut sites differentially methylated on chromosome 20 in Rats.
+	\item Positions of MspI cut sites differentially methylated in the prostate on chromosome 20 in Rats.
 }
+
+The data set contains 10 differentially methylated sites in the prostate between rats fed a control or high fat diet.
 }
 \keyword{datasets}
 
