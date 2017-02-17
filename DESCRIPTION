@@ -1,16 +1,16 @@
 Package: msgbsR
 Type: Package
 Title: msgbsR: methylation sensitive genotyping by sequencing (MS-GBS) R functions
-Version: 0.99.24
-Date: 2016-12-09
+Version: 0.99.25
+Date: 2017-02-17
 Author: Benjamin Mayne
 Maintainer: Benjamin Mayne <benjamin.mayne@adelaide.edu.au>
-Depends: R (>= 3.4), methods, GenomicRanges
-Imports: ggbio, ggplot2, GenomicFeatures, stats, GenomeInfoDb, Rsamtools, edgeR, easyRNASeq, R.utils, utils, parallel, plyr, IRanges, S4Vectors
+Depends: R (>= 3.4), GenomicRanges, methods
+Imports: BSgenome, easyRNASeq, edgeR, GenomicAlignments, GenomicFeatures, GenomeInfoDb, ggbio, ggplot2, IRanges, parallel, plyr, Rsamtools, R.utils, stats, SummarizedExperiment, S4Vectors, utils
 Suggests: roxygen2, BSgenome.Rnorvegicus.UCSC.rn6
 biocViews: DifferentialMethylation, DataImport, Epigenetics, MethylSeq
 Description: Pipeline for the anaysis of a MS-GBS experiment.
 License: GPL-2
 LazyLoad: yes
-Collate: 'msgbsR.R' 'rawCounts.R' 'checkCuts.R' 'plotCounts.R' 'diffMeth.R' 'plotCircos.R' 'closestFeat.R'
+Collate: 'msgbsR.R' 'rawCounts.R' 'checkCuts.R' 'plotCounts.R' 'diffMeth.R' 'plotCircos.R'
 RoxygenNote: 5.0.1
