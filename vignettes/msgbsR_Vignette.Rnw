@@ -75,13 +75,7 @@ library(BSgenome.Rnorvegicus.UCSC.rn6)
 correctCuts <- checkCuts(cutSites = cutSites, genome = "rn6", seq = "CCGG")
 @
 
-If a BSgenome is unavailable for a species of interest, another option to checking the cut sites is to use a fasta file. msgbsR comes with the fasta file for chromosome 20 from UCSC rn6. To use the checkCuts function with a fasta file simply change the genome input to the fasta file location and change the fasta option to TRUE. An example of this is shown below.
-
-<<run checkCuts>>=
-chr20 <- system.file("extdata", "chr20.fa.gz", package = "msgbsR")
-correctCuts <- checkCuts(cutSites = cutSites, genome = chr20, fasta = TRUE, seq = "CCGG")
-
-@
+If a BSgenome is unavailable for a species of interest, another option to checking the cut sites is to use a fasta file which can be used throught the checkCuts() function.
 
 The correctCuts data object is in the format of a GRanges object and contains the correct sites that contained the recognition sequence. These sites can be kept within se by using the subsetByOverlaps function.
 
